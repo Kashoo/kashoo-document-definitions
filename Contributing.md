@@ -14,6 +14,8 @@ Each subdirectory of the `databases` directory corresponds to a single Sync Gate
 
 When adding a new database, ensure that the directory name **exactly** matches the new database's name as it will be configured in Sync Gateway. By convention, the document definitions _must_ be defined in a file called `doc-definitions.js` within the corresponding database directory.
 
+Add an overview of new databases to the **Databases** section of the README.
+
 ### Document definitions
 
 To promote modularity, you are strongly encouraged to define each individual document definition in its own [document definition fragment](https://github.com/Kashoo/synctos/blob/master/README.md#modularity) within the corresponding database directory.
