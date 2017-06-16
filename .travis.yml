@@ -1,4 +1,12 @@
 language: node_js
+
+# Ensure a wide range of Node.js versions are supported from 0.10.x to latest
 node_js:
   - "node"
   - "0.10"
+
+# Enable Greenkeeper's support for npm 5+ lockfiles: https://github.com/greenkeeperio/greenkeeper-lockfile
+before_install:
+  - npm install -g greenkeeper-lockfile@1
+before_script: etc/update-lockfile.sh
+after_script: etc/push-lockfile.sh
