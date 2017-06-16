@@ -40,6 +40,8 @@ Each change must be implemented in its own feature branch and submitted via a Gi
 
 # Reviewing Changes
 
-Once a change has been posted as a GitHub pull request, a Kashoo developer other than the change's author needs to examine the code/configuration for style, correctness, test coverage, documentation and semantics. Special care should be taken to ensure that document definitions are always limited to the minimum set of channels, roles and users (collectively, "permissions") that are necessary to fulfill their function and that the set of permissions is appropriate for the various read and write operations. Also be sure that document property validators are appropriately strict in the constraints they apply.
+Once a change has been posted as a GitHub pull request, a Kashoo developer other than the change's author needs to examine the code/configuration for style, correctness, test coverage, documentation and semantics. As part of your due diligence, verify that the Travis CI [build job](https://travis-ci.org/Kashoo/kashoo-document-definitions) successfully ran to completion for the pull request.
+
+Special care should be taken to ensure that document definitions are always limited to the minimum set of channels, roles and users (collectively, "permissions") that are necessary to fulfill their function and that the set of permissions is appropriate for the various read and write operations. Also be sure that document property validators are appropriately strict in the constraints they apply.
 
 If/when a change is deemed satisfactory, it is the responsibility of the reviewer to merge the pull request and delete its feature branch, where possible.
