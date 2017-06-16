@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ev
 
 # Have Greenkeeper update the project's npm lockfile to match the new dependency versions
 NPM_VERSION=$(npm --version)
