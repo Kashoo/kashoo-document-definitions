@@ -8,10 +8,29 @@ This repository defines the data model for Kashoo's Sync Gateway databases (aka 
 
 1. Install [Node.js](https://nodejs.org/) to build and run the project
 2. Install the project's local dependencies (run from this directory): `npm install`
-3. Generate sync functions with synctos (also run from this directory): `etc/make-sync-functions.sh`
+3. Generate sync functions with synctos (run from this directory): `etc/make-sync-functions.sh`
+4. Execute the test suite (run from this directory): `npm test`
 
-# Specifications
+# Databases
 
-Sync function specifications (i.e. unit tests) are defined in the `test/` directory using the [expect.js](https://github.com/Automattic/expect.js) assertion and [simple-mock](https://github.com/jupiter/simple-mock) mocking libraries. Tests are executed by the [Mocha](http://mochajs.org/) test runner. Also, synctos provides a test helper module that reduces the burden of writing new specs. See the synctos [Testing](https://github.com/Kashoo/synctos/blob/master/README.md#testing) documentation for more info.
+The following Sync Gateway databases are defined within this repo:
 
-To execute the test suite (run from this directory): `npm test`
+#### app-config-sync
+
+A database for storing _non-sensitive_ application configuration. For example, it is used to store the list of feature release toggles that are currently enabled for all apps/services in the environment.
+
+#### business-sync
+
+A database for documents that are tied to a specific business (e.g. customer payment processor configuration).
+
+Document IDs should follow a hierarchical pattern with periods (.) as ID token separators. It is appropriate to use a UUID as an ID token wherever it is expected to be random and unique. For example, to represent a payment with ID "792b3e16-ae78-4a6b-9c8e-0ea0f9dfb0e8" for invoice "987" in business "123":
+
+```
+biz.123.invoice.987.payment.792b3e16-ae78-4a6b-9c8e-0ea0f9dfb0e8
+```
+
+This makes it easy to fetch a document if you know the individual ID tokens and the hierarchy.
+
+#### square-data
+
+A database for holding a copy of Square data that has been imported as part of a Merchant <-> Business integration. It currently stores five types of Square data: items, fees, payments, refunds and settlements. Documents are only stored for records that have been retrieved and imported to a Kashoo business.
