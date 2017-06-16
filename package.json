@@ -1,0 +1,21 @@
+{
+  "name": "kashoo-document-definitions",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "jshint": "^2.9.4",
+    "mocha": "^3.4.2",
+    "simple-mock": "^0.7.3",
+    "synctos": "^1.9.1"
+  },
+  "scripts": {
+    "test": "etc/prepare-tests.sh && node_modules/.bin/mocha",
+    "test-report": "etc/prepare-tests.sh && node_modules/.bin/mocha -R xunit test/ > build/test-reports/synctos.xml"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kashoo/kashoo-document-definitions"
+  }
+}
