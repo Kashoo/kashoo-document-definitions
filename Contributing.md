@@ -36,7 +36,7 @@ Every reasonable effort should be made to preserve backward compatibility with e
 
 ### Pull requests
 
-Each change must be implemented in its own feature branch and submitted via a GitHub pull request for code review.
+Each change must be implemented in its own feature branch and submitted via a GitHub pull request for code review. Be sure to include an entry for each change in `CHANGELOG.md`'s "Unreleased" section according to the guidelines at [Keep a CHANGELOG](http://keepachangelog.com).
 
 # Reviewing Changes
 
