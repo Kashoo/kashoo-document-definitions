@@ -1,6 +1,6 @@
 # Introduction
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Kashoo/kashoo-document-definitions.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/Kashoo/kashoo-document-definitions.svg?branch=master)](https://travis-ci.org/Kashoo/kashoo-document-definitions) [![Greenkeeper Enabled](https://badges.greenkeeper.io/Kashoo/kashoo-document-definitions.svg)](https://greenkeeper.io/)
 
 This repository defines the data model for Kashoo's Sync Gateway databases (aka buckets). The configuration is in the form of [synctos](https://github.com/Kashoo/synctos) document definitions. Each subdirectory of the `databases` directory defines the document types for a single database.
 
