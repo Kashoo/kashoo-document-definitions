@@ -15,7 +15,8 @@
       arrayElementsValidator: {
         type: 'string',
         mustNotBeEmpty: true,
-        required: true
+        required: true,
+        regex: featureToggleNameRegex
       }
     }
   }

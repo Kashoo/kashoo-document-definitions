@@ -13,7 +13,7 @@ describe('app-config-sync feature release toggle definitions documents definitio
       _id: 'feature-release-toggle.foo-toggle',
       name: 'foo-toggle',
       description: 'desc',
-      jira: 'kbw-2342',
+      ticketId: 'kbw-2342',
       state: 'development',
       note: 'foo'
     };
