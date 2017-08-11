@@ -10,34 +10,37 @@
   },
   propertyValidators: {
     toggles: {
-      // A list of actions that are available to the recipient of the notification
+      // A list of the feature toggles defined for the application.
       type: 'array',
       arrayElementsValidator: {
         type: 'object',
         required: true,
         propertyValidators: {
+          // The name of the feature toggle, as used within applications.
           name: {
             type: 'string',
             required: true,
             mustNotBeEmpty: true,
             regexPattern: featureToggleNameRegex
           },
+          // A description of the feature toggle for documentation within the feature toggle manager.
           description: {
             type: 'string',
             required: true,
             mustNotBeEmpty: true
           },
+          // The ticket id related to the feature toggle, for example KBW-1234
           ticketId: {
-            // the ticket id related to the feature toggle, for example KBW-1234
             type: 'string'
           },
+          // The state of the feature toggle.
           state: {
             type: 'enum',
             predefinedValues: [ 'development', 'ready', 'remove' ],
             required: true
           },
+          // Any extra notes about the feature toggle
           note: {
-            // Any extra notes about the feature toggle
             type: 'string'
           }
         }
