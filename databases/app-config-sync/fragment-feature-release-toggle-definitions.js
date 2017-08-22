@@ -1,42 +1,50 @@
-function() {
-  var typeRegexMatchGroups = featureToggleNameRegex.exec(doc._id);
-  var PROCESSOR_ID_MATCH_GROUP = 1;
-
-  return {
-    channels: {
-      view: [ 'view-feature-release-toggle-definitions', 'view-config' ],
-      add: [ 'edit-feature-release-toggle-definitions', 'edit-config' ],
-      replace: [ 'edit-feature-release-toggle-definitions', 'edit-config' ],
-      remove: [ 'remove-feature-release-toggle-definitions', 'remove-config' ]
-    },
-    typeFilter: function(doc, oldDoc) {
-      // Example valid document IDs: "feature-release-toggle.foo-toggle", "feature-release-toggle.bar_1"
-      return new RegExp('^feature-release-toggle\.' + featureToggleNamePattern + '$').test(doc._id);
-    },
-    propertyValidators: {
-      name: {
-        type: 'string',
+{
+  channels: {
+    view: [ 'view-feature-release-toggle-definitions', 'view-config' ],
+    add: [ 'edit-feature-release-toggle-definitions', 'edit-config' ],
+    replace: [ 'edit-feature-release-toggle-definitions', 'edit-config' ],
+    remove: [ 'remove-feature-release-toggle-definitions', 'remove-config' ]
+  },
+  typeFilter: function(doc, oldDoc) {
+    return doc._id === 'featureReleaseToggleDefinitions';
+  },
+  propertyValidators: {
+    toggles: {
+      // A list of the feature toggles defined for the application.
+      type: 'array',
+      arrayElementsValidator: {
+        type: 'object',
         required: true,
-        mustNotBeEmpty: true,
-        immutable: true,
-        regexPattern: featureToggleNameRegex
-      },
-      description: {
-        type: 'string',
-        required: true,
-        mustNotBeEmpty: true
-      },
-      ticketId: {
-        type: 'string'
-      },
-      state: {
-        type: 'enum',
-        predefinedValues: [ 'development', 'ready', 'remove' ],
-        required: true
-      },
-      note: {
-        type: 'string'
+        propertyValidators: {
+          // The name of the feature toggle, as used within applications.
+          name: {
+            type: 'string',
+            required: true,
+            mustNotBeEmpty: true,
+            regexPattern: featureToggleNameRegex
+          },
+          // A description of the feature toggle for documentation within the feature toggle manager.
+          description: {
+            type: 'string',
+            required: true,
+            mustNotBeEmpty: true
+          },
+          // The ticket id related to the feature toggle, for example KBW-1234
+          ticketId: {
+            type: 'string'
+          },
+          // The state of the feature toggle.
+          state: {
+            type: 'enum',
+            predefinedValues: [ 'development', 'ready', 'remove' ],
+            required: true
+          },
+          // Any extra notes about the feature toggle
+          note: {
+            type: 'string'
+          }
+        }
       }
     }
-  };
+  }
 }

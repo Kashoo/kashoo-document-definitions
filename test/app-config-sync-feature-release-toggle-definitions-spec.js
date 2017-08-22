@@ -10,12 +10,20 @@ describe('app-config-sync feature release toggle definitions documents definitio
 
   it('saves feature release toggle definitions', function() {
     var doc = {
-      _id: 'feature-release-toggle.foo-toggle',
-      name: 'foo-toggle',
-      description: 'desc',
-      ticketId: 'kbw-2342',
-      state: 'development',
-      note: 'foo'
+      _id: 'featureReleaseToggleDefinitions',
+      toggles: [ {
+          name: 'foo-toggle',
+          description: 'desc',
+          ticketId: 'kbw-2342',
+          state: 'development',
+          note: 'foo'
+        }, {
+          name: 'bar-toggle',
+          description: 'desc',
+          ticketId: 'kbw-141',
+          state: 'development',
+        }
+      ]
     };
 
     testHelper.verifyDocumentCreated(doc, expectedChannels);
@@ -23,43 +31,21 @@ describe('app-config-sync feature release toggle definitions documents definitio
 
   it('refuses a document with invalid content', function() {
     var invalidDoc = {
-      _id: 'feature-release-toggle.foo-toggle',
-      name: '',
-      state: 'foo'
+      _id: 'featureReleaseToggleDefinitions',
+      toggles: [ {
+          foo: 'bar'
+        }
+      ]
     };
 
     testHelper.verifyDocumentNotCreated(
       invalidDoc,
       'featureReleaseToggleDefinitions',
       [
-        errorFormatter.mustNotBeEmptyViolation('name'),
-        errorFormatter.regexPatternItemViolation('name', /^[a-z0-9_-]+$/),
-        errorFormatter.requiredValueViolation('description'),
-        errorFormatter.enumPredefinedValueViolation('state', [ 'development', 'ready', 'remove' ])
-      ],
-      expectedChannels);
-  });
-
-  it('cannot replace name property', function() {
-    var doc = {
-      _id: 'feature-release-toggle.foo-toggle',
-      name: 'foo-toggle-2',
-      description: 'desc',
-      state: 'development'
-    };
-    var oldDoc = {
-      _id: 'feature-release-toggle.foo-toggle',
-      name: 'foo-toggle',
-      description: 'desc',
-      state: 'development'
-    };
-
-    testHelper.verifyDocumentRejected(
-      doc,
-      oldDoc,
-      'featureReleaseToggleDefinitions',
-      [
-        errorFormatter.immutableItemViolation('name')
+        errorFormatter.requiredValueViolation('toggles[0].name'),
+        errorFormatter.requiredValueViolation('toggles[0].description'),
+        errorFormatter.requiredValueViolation('toggles[0].state'),
+        errorFormatter.unsupportedProperty('toggles[0].foo')
       ],
       expectedChannels);
   });
