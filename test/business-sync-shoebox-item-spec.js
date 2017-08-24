@@ -2,21 +2,21 @@ var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
 var testHelper = require('../node_modules/synctos/etc/test-helper.js');
 var errorFormatter = testHelper.validationErrorFormatter;
 
-describe('business-sync shoebox snippet document definition', function() {
+describe('business-sync shoebox item document definition', function() {
   beforeEach(function() {
     testHelper.init('build/sync-functions/business-sync/sync-function.js');
   });
 
-  var expectedDocType = 'shoeboxSnippet';
+  var expectedDocType = 'shoeboxItem';
   var staffPrivilege = 'STAFF';
 
-  it('successfully creates a valid shoebox snippet document', function() {
+  it('successfully creates a valid shoebox item document', function() {
     var doc = {
-      _id: 'biz.3.shoeboxSnippet.bank-record.XYZ',
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank-record',
       source: 'yodlee',
-      kashooEntityType: 'record',
-      kashooId: 23456,
+      sourceId: '1239004',
+      received: '2016-06-18T18:57:35.328-08:00',
       data: '{ "bank-rec": "data" }',
       unknownProp: 'some-value'
     };
@@ -24,12 +24,13 @@ describe('business-sync shoebox snippet document definition', function() {
     testHelper.verifyDocumentCreated(doc, [ staffPrivilege ]);
   });
 
-  it('cannot create a shoebox snippet document when the properties are invalid', function() {
+  it('cannot create a shoebox item document when the properties are invalid', function() {
     var doc = {
-      _id: 'biz.1.shoeboxSnippet.bank-record.XYZ',
+      _id: 'biz.1.shoeboxItem.bank-record.XYZ',
       type: 4,
       source: '',
-      kashooId: '23456',
+      sourceId: 982784,
+      received: 'some non-date',
       data: 2.4,
     };
 
@@ -39,28 +40,27 @@ describe('business-sync shoebox snippet document definition', function() {
       [
         errorFormatter.typeConstraintViolation('type', 'string'),
         errorFormatter.mustNotBeEmptyViolation('source'),
-        errorFormatter.typeConstraintViolation('kashooId', 'integer'),
+        errorFormatter.typeConstraintViolation('sourceId', 'string'),
+        errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'string'),
       ],
       [ staffPrivilege ]);
   });
 
-  it('cannot replace a valid shoebox snippet document', function() {
+  it('cannot replace a valid shoebox item document', function() {
     var doc = {
-      _id: 'biz.3.shoeboxSnippet.bank-record.XYZ',
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank-record',
       source: 'yodlee',
-      kashooEntityType: 'record',
-      kashooId: 23456,
+      received: '2016-06-18T18:57:35.328-08:00',
       data: '{ "bank-rec": "changed data" }',
       unknownProp: 'some-value'
     };
     var oldDoc = {
-      _id: 'biz.3.shoeboxSnippet.bank-record.XYZ',
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank-record',
       source: 'yodlee',
-      kashooEntityType: 'record',
-      kashooId: 23456,
+      received: '2016-06-18T18:57:35.328-08:00',
       data: '{ "bank-rec": "data" }',
       unknownProp: 'some-value'
     };
@@ -68,13 +68,12 @@ describe('business-sync shoebox snippet document definition', function() {
     testHelper.verifyDocumentNotReplaced(doc, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ], [ staffPrivilege ]);
   });
 
-  it('cannot delete a shoebox snippet document', function() {
+  it('cannot delete a shoebox item document', function() {
     var oldDoc = {
-      _id: 'biz.3.shoeboxSnippet.bank-record.XYZ',
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank-record',
       source: 'yodlee',
-      kashooEntityType: 'record',
-      kashooId: 23456,
+      received: '2016-06-18T18:57:35.328-08:00',
       data: '{ "bank-rec": "data" }',
       unknownProp: 'some-value'
     };

@@ -102,6 +102,6 @@ function() {
     paymentRequisitionsReference: importDocumentDefinitionFragment('fragment-payment-requisitions-reference.js'),
 
     // Generic document for storing outside sourced data
-    shoeboxSnippet: importDocumentDefinitionFragment('fragment-shoebox-snippet.js')
+    shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js')
   };
 }
