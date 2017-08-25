@@ -33,17 +33,22 @@ function() {
 
   // Builds a function that returns the view, add, replace, remove channels extrapolated from the specified base privilege, name which is
   // formatted according to the de facto Books convention of "VIEW_FOOBAR", "ADD_FOOBAR", "CHANGE_FOOBAR" and "REMOVE_FOOBAR" assuming the
-  // base privilege name is "FOOBAR"
+  // base privilege name is "FOOBAR". If basePrivilegeName is omitted, only the write channel configuration is set (and only to the "STAFF"
+  // channel).
   function getDocSyncChannels(doc, oldDoc, basePrivilegeName) {
     var businessId = getBusinessId(doc, oldDoc);
 
     return function(doc, oldDoc) {
-      return {
-        view: [ toSyncChannel(businessId, 'VIEW_' + basePrivilegeName), staffChannel ],
-        add: [ toSyncChannel(businessId, 'ADD_' + basePrivilegeName), staffChannel ],
-        replace: [ toSyncChannel(businessId, 'CHANGE_' + basePrivilegeName), staffChannel ],
-        remove: [ toSyncChannel(businessId, 'REMOVE_' + basePrivilegeName), staffChannel ]
-      };
+      if (basePrivilegeName) {
+        return {
+          view: [ toSyncChannel(businessId, 'VIEW_' + basePrivilegeName), staffChannel ],
+          add: [ toSyncChannel(businessId, 'ADD_' + basePrivilegeName), staffChannel ],
+          replace: [ toSyncChannel(businessId, 'CHANGE_' + basePrivilegeName), staffChannel ],
+          remove: [ toSyncChannel(businessId, 'REMOVE_' + basePrivilegeName), staffChannel ]
+        };
+      } else {
+        return { write: staffChannel };
+      }
     };
   }
 
@@ -94,6 +99,9 @@ function() {
     paymentRequisition: importDocumentDefinitionFragment('fragment-payment-requisition.js'),
 
     // References the payment requisitions and payment attempts that were created for an invoice
-    paymentRequisitionsReference: importDocumentDefinitionFragment('fragment-payment-requisitions-reference.js')
+    paymentRequisitionsReference: importDocumentDefinitionFragment('fragment-payment-requisitions-reference.js'),
+
+    // Generic document for storing outside sourced data
+    shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js')
   };
 }
