@@ -52,29 +52,6 @@ function() {
     };
   }
 
-  // Creates a RegExp to match the ID of an entity that belongs to a merchant
-  function createMerchantEntityRegex(suffixPattern) {
-    // Note that this regex uses double quotes rather than single quotes as a workaround to https://github.com/Kashoo/synctos/issues/116
-    return new RegExp("^merchant\\.[A-Za-z0-9_-]+(\\.biz\\.[0-9]+)?\\." + suffixPattern + "$");
-  }
-
-  // Retrieves the ID of the Square merchant to which a Square data document belongs based on its document ID
-  function getMerchantId(doc) {
-    var regex = /^merchant\.([A-Za-z0-9_-]+)(?:\..+)?$/;
-    var matchGroups = regex.exec(doc._id);
-
-    return matchGroups ? matchGroups[1] : null;
-  }
-
-  //  Assigns documents to the staff channel as well as a channel associated with the merchantId
-  function getSquareDocSyncChannels(doc, oldDoc) {
-    var merchantId = getMerchantId(doc);
-
-    return function(doc, oldDoc) {
-      return { write: [ merchantId, staffChannel ]};
-    };
-  }
-
   // The document type definitions. For everyone's sanity, please keep the document types in case-insensitive alphabetical order
   return {
     // The base business configuration. Should not be expanded with new properties unless they are directly related to the existing
