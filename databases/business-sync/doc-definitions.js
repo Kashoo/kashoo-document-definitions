@@ -102,6 +102,9 @@ function() {
     paymentRequisitionsReference: importDocumentDefinitionFragment('fragment-payment-requisitions-reference.js'),
 
     // Generic document for storing outside sourced data
-    shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js')
+    shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js'),
+
+    // For storing Square data entities and any associations
+    squareData: importDocumentDefinitionFragment('fragment-square-data.js'),
   };
 }
