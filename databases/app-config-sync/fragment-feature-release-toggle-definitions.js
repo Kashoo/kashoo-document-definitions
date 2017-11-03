@@ -36,7 +36,7 @@
           // The state of the feature toggle.
           state: {
             type: 'enum',
-            predefinedValues: [ 'development', 'ready', 'remove' ],
+            predefinedValues: [ 'development only', 'test in staging', 'ready for production', 'on in production', 'dark in production', 'ready to be removed' ],
             required: true
           },
           // Any extra notes about the feature toggle
