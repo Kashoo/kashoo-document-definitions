@@ -15,13 +15,13 @@ describe('app-config-sync feature release toggle definitions documents definitio
           name: 'foo-toggle',
           description: 'desc',
           ticketId: 'kbw-2342',
-          state: 'development',
+          state: 'development only',
           note: 'foo'
         }, {
           name: 'bar-toggle',
           description: 'desc',
           ticketId: 'kbw-141',
-          state: 'development',
+          state: 'development only',
         }
       ]
     };
