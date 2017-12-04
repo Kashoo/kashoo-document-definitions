@@ -3,6 +3,7 @@ function() {
   var featureToggleNameRegex = /^[a-z0-9_-]+$/;
 
   return {
+    announcements: importDocumentDefinitionFragment('fragment-announcements.js'),
     featureReleaseToggleDefinitions: importDocumentDefinitionFragment('fragment-feature-release-toggle-definitions.js'),
     featureReleaseToggles: importDocumentDefinitionFragment('fragment-feature-release-toggles.js'),
     paymentNotificationTemplates: importDocumentDefinitionFragment('fragment-payment-notification-templates.js'),
