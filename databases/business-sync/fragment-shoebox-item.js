@@ -1,5 +1,5 @@
 {
-  channels: getDocSyncChannels(doc, oldDoc),
+  channels: getDocSyncChannels(doc, oldDoc, 'SHOEBOX_ITEMS'),
   typeFilter: function(doc, oldDoc) {
     // Keyspace schema:  biz.<biz_id>.shoeboxItem.<item_type>.<uuid>
     return createBusinessEntityRegex('shoeboxItem\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+').test(doc._id);
