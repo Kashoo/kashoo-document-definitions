@@ -8,7 +8,7 @@ describe('business-sync shoebox item document definition', function() {
   });
 
   var expectedDocType = 'shoeboxItem';
-  var staffPrivilege = 'STAFF';
+  var expectedBasePrivilege = 'SHOEBOX_ITEMS';
 
   it('successfully creates a valid shoebox item document', function() {
     var doc = {
@@ -21,7 +21,7 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    testHelper.verifyDocumentCreated(doc, [ staffPrivilege ]);
+    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
   it('cannot create a shoebox item document when the properties are invalid', function() {
@@ -34,7 +34,9 @@ describe('business-sync shoebox item document definition', function() {
       data: 2.4,
     };
 
-    testHelper.verifyDocumentNotCreated(
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      1,
       doc,
       expectedDocType,
       [
@@ -43,8 +45,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'string'),
-      ],
-      [ staffPrivilege ]);
+      ]);
   });
 
   it('cannot replace a valid shoebox item document', function() {
@@ -65,7 +66,7 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    testHelper.verifyDocumentNotReplaced(doc, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ], [ staffPrivilege ]);
+    businessSyncSpecHelper.verifyDocumentNotReplaced(expectedBasePrivilege, 3, doc, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ]);
   });
 
   it('cannot delete a shoebox item document', function() {
@@ -78,6 +79,6 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    testHelper.verifyDocumentNotDeleted(oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ], [ staffPrivilege ]);
+    businessSyncSpecHelper.verifyDocumentNotDeleted(expectedBasePrivilege, 3, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ]);
   });
 });

@@ -32,3 +32,11 @@ exports.verifyDocumentNotReplaced = function(basePrivilegeName, businessId, doc,
     expectedErrorMessages,
     [ staffChannel, businessId + '-CHANGE_' + basePrivilegeName ]);
 };
+
+exports.verifyDocumentNotDeleted = function(basePrivilegeName, businessId, doc, expectedDocType, expectedErrorMessages) {
+  testHelper.verifyDocumentNotDeleted(
+    doc,
+    expectedDocType,
+    expectedErrorMessages,
+    [ staffChannel, businessId + '-REMOVE_' + basePrivilegeName ]);
+};
