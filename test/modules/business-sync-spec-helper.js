@@ -1,6 +1,6 @@
 // This module contains a collection of functions to be used when validating the business-sync document definitions
 
-var testHelper = require('../../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 
 var staffChannel = exports.staffChannel = 'STAFF';
 
