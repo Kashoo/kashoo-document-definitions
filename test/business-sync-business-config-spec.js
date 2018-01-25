@@ -1,10 +1,10 @@
 var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 var errorFormatter = testHelper.validationErrorFormatter;
 
 describe('business-sync business configuration document definition', function() {
   beforeEach(function() {
-    testHelper.init('build/sync-functions/business-sync/sync-function.js');
+    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
   });
 
   function verifyBusinessConfigCreated(businessId, doc) {
@@ -100,8 +100,8 @@ describe('business-sync business configuration document definition', function() 
       doc,
       oldDoc,
       [
-        errorFormatter.supportedExtensionsAttachmentViolation('businessLogoAttachment', [ 'png', 'gif', 'jpg', 'jpeg' ]),
-        errorFormatter.supportedContentTypesAttachmentViolation('businessLogoAttachment', [ 'image/png', 'image/gif', 'image/jpeg' ]),
+        errorFormatter.supportedExtensionsAttachmentReferenceViolation('businessLogoAttachment', [ 'png', 'gif', 'jpg', 'jpeg' ]),
+        errorFormatter.supportedContentTypesAttachmentReferenceViolation('businessLogoAttachment', [ 'image/png', 'image/gif', 'image/jpeg' ]),
         errorFormatter.maximumSizeAttachmentViolation('businessLogoAttachment', 2097152),
         errorFormatter.maximumIndividualAttachmentSizeViolation('invalid.xml', 102400),
         errorFormatter.maximumAttachmentCountViolation(1),

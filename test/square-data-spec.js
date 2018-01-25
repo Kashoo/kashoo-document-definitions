@@ -1,11 +1,11 @@
-var testHelper = require('../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 var errorFormatter = testHelper.validationErrorFormatter;
 
 var staffChannel = 'STAFF';
 
 describe('square-data database:', function() {
   beforeEach(function() {
-    testHelper.init('build/sync-functions/square-data/sync-function.js');
+    testHelper.initSyncFunction('build/sync-functions/square-data/sync-function.js');
   });
 
   /* Generic function for doing a set of common tests against a given document type */

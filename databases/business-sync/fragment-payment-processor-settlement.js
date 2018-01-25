@@ -41,11 +41,8 @@ function() {
         required: true,
         mustNotBeEmpty: true,
         immutable: true,
-        regexPattern: function(doc, oldDoc, value, oldValue) {
-          var expectedSettlementId = typeRegexMatchGroups[SETTLEMENT_ID_MATCH_GROUP];
-
-          // Note that this regex uses double quotes rather than single quotes as a workaround to https://github.com/Kashoo/synctos/issues/116
-          return new RegExp("^" + expectedSettlementId + "$");
+        mustEqual: function(doc, oldDoc, value, oldValue) {
+          return typeRegexMatchGroups[SETTLEMENT_ID_MATCH_GROUP];
         }
       },
       processorId: {
@@ -54,11 +51,8 @@ function() {
         required: true,
         mustNotBeEmpty: true,
         immutable: true,
-        regexPattern: function(doc, oldDoc, value, oldValue) {
-          var expectedProcessorId = typeRegexMatchGroups[PROCESSOR_ID_MATCH_GROUP];
-
-          // Note that this regex uses double quotes rather than single quotes as a workaround to https://github.com/Kashoo/synctos/issues/116
-          return new RegExp("^" + expectedProcessorId + "$");
+        mustEqual: function(doc, oldDoc, value, oldValue) {
+          return typeRegexMatchGroups[PROCESSOR_ID_MATCH_GROUP];
         }
       },
       capturedAt: {
