@@ -1,10 +1,10 @@
 var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 var errorFormatter = testHelper.validationErrorFormatter;
 
 describe('business-sync payment processor settlement document definition', function() {
   beforeEach(function() {
-    testHelper.init('build/sync-functions/business-sync/sync-function.js');
+    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
   });
 
   function verifySettlementWritten(businessId, doc, oldDoc) {
@@ -52,8 +52,8 @@ describe('business-sync payment processor settlement document definition', funct
       [
         errorFormatter.maximumValueViolation('businessId', 12345),
         errorFormatter.requiredValueViolation('transferId'),
-        errorFormatter.regexPatternItemViolation('processorId', /^XYZ$/),
-        errorFormatter.regexPatternItemViolation('settlementId', /^foo-bar$/),
+        errorFormatter.mustEqualViolation('processorId', 'XYZ'),
+        errorFormatter.mustEqualViolation('settlementId', 'foo-bar'),
         errorFormatter.datetimeFormatInvalid('capturedAt'),
         errorFormatter.typeConstraintViolation('processedAt', 'datetime'),
         errorFormatter.requiredValueViolation('amount')

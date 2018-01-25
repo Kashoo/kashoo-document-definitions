@@ -1,9 +1,9 @@
-var testHelper = require('../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 var errorFormatter = testHelper.validationErrorFormatter;
 
 describe('app-config-sync payment notification templates document definition', function() {
   beforeEach(function() {
-    testHelper.init('build/sync-functions/app-config-sync/sync-function.js');
+    testHelper.initSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
   });
 
   var expectedChannels = [ 'edit-config' ];

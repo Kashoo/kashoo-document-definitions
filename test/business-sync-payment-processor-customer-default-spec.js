@@ -1,10 +1,10 @@
 var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('../node_modules/synctos/etc/test-helper.js');
+var testHelper = require('synctos').testHelper;
 var errorFormatter = testHelper.validationErrorFormatter;
 
 describe('business-sync payment processor customer default document definition', function() {
   beforeEach(function() {
-    testHelper.init('build/sync-functions/business-sync/sync-function.js');
+    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
   });
 
   var expectedDocType = 'paymentProcessorCustomerDefault';
