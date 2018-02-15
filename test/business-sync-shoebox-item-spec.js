@@ -58,11 +58,18 @@ describe('business-sync shoebox item document definition', function() {
             'some-metadata-field': 'some random user provided metadata',
             'another-field': 'more data'
           },
-          annotatingUser: 12345,
-          lastModified: '2017-02-18T18:57:35.328-08:00'
+          modifications: [
+            {
+              timestamp: '2017-02-18T18:57:35.328-08:00',
+              userId: 1234
+            }
+          ]
         }
       ],
-      processed: true,
+      processed: {
+        userId: 333,
+        timestamp: '2017-02-18T18:57:35.328-08:00'
+      },
       unknownProp: 'some-value'
     };
 
@@ -93,7 +100,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'object'),
         errorFormatter.typeConstraintViolation('annotations', 'array'),
-        errorFormatter.typeConstraintViolation('processed', 'boolean'),
+        errorFormatter.typeConstraintViolation('processed', 'object'),
       ]);
   });
 
@@ -112,10 +119,16 @@ describe('business-sync shoebox item document definition', function() {
           type: 'some-unsupported-type',
           dataType: 'some-unsupported-data-type',
           // missing data field
-          // missing annotating user field
-          lastModified: 'not-a-timestamp'
+          modifications: [
+            { userId: 0, timestamp: 'not-a-date' }, // user Id cannot be 0, timestamp not valid format
+            { timestamp: 444 } // missing userId, timestamp not a string
+          ]
         }
-      ]
+      ],
+      processed: {
+        userId: 34.5,
+        timestamp: "not-a-timestampt"
+      }
     };
 
     businessSyncSpecHelper.verifyDocumentNotCreated(
@@ -127,8 +140,12 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.enumPredefinedValueViolation('annotations[0].type', [ 'embedded' ]),
         errorFormatter.enumPredefinedValueViolation('annotations[0].dataType', [ 'user-metadata' ]),
         errorFormatter.requiredValueViolation('annotations[0].data'),
-        errorFormatter.requiredValueViolation('annotations[0].annotatingUser'),
-        errorFormatter.datetimeFormatInvalid('annotations[0].lastModified'),
+        errorFormatter.minimumValueExclusiveViolation('annotations[0].modifications[0].userId', 0),
+        errorFormatter.datetimeFormatInvalid('annotations[0].modifications[0].timestamp'),
+        errorFormatter.typeConstraintViolation('annotations[0].modifications[1].timestamp', 'datetime'),
+        errorFormatter.requiredValueViolation('annotations[0].modifications[1].userId'),
+        errorFormatter.datetimeFormatInvalid('processed.timestamp', 'datetime'),
+        errorFormatter.typeConstraintViolation('processed.userId', 'integer'),
       ]);
   });
 

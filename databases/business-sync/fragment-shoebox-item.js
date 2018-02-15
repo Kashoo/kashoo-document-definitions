@@ -91,24 +91,45 @@
             type: 'object',
             required: true
           },
-          // timestamp recording when this annotation was last updated
-          lastModified: {
-            type: 'datetime',
-            required: true
-          },
-          // ID of the annotating user
-          annotatingUser: {
-            type: 'integer',
-            minimumValueExclusive: 0,
-            required: true
+          // Array of timestamp and user IDs of modifications to this annotation
+          modifications: {
+            type: 'array',
+            mustNotBeEmpty: true,
+            required: true,
+            arrayElementsValidator: {
+              type: 'object',
+              propertyValidators: {
+                userId: {
+                  type: 'integer',
+                  minimumValueExclusive: 0,
+                  required: true
+                },
+                timestamp: {
+                  type: 'datetime',
+                  required: true
+                }
+              }
+            }
           }
         }
       }
     },
     // indicating whether a record has been processed
     processed: {
-      type: 'boolean',
-      required: false
+      type: 'object',
+      immutable: true,
+      required: false,
+      propertyValidators: {
+        userId: {
+          type: 'integer',
+          minimumValueExclusive: 0,
+          required: true
+        },
+        timestamp: {
+          type: 'datetime',
+          required: true
+        }
+      }
     }
   }
 }
