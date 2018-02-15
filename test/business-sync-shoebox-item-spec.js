@@ -40,7 +40,7 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
-  it('successfully creates a shoebox item document with a missing previous data field', function() {
+  it('successfully creates a shoebox item document with a missing previous data field and a collection of valid annotations', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
@@ -50,6 +50,19 @@ describe('business-sync shoebox item document definition', function() {
       data: {
         foo: 'bar'
       },
+      annotations: [
+        {
+          type: 'embedded',
+          dataType: 'user-metadata',
+          data: {
+            'some-metadata-field': 'some random user provided metadata',
+            'another-field': 'more data'
+          },
+          annotatingUser: 12345,
+          lastModified: '2017-02-18T18:57:35.328-08:00'
+        }
+      ],
+      processed: true,
       unknownProp: 'some-value'
     };
 
@@ -63,7 +76,9 @@ describe('business-sync shoebox item document definition', function() {
       source: '',
       sourceId: 982784,
       received: 'some non-date',
-      data: 2.4
+      data: 2.4,
+      annotations: 'a string annotation field',
+      processed: 1233
     };
 
     businessSyncSpecHelper.verifyDocumentNotCreated(
@@ -76,7 +91,44 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.datetimeFormatInvalid('received'),
-        errorFormatter.typeConstraintViolation('data', 'object')
+        errorFormatter.typeConstraintViolation('data', 'object'),
+        errorFormatter.typeConstraintViolation('annotations', 'array'),
+        errorFormatter.typeConstraintViolation('processed', 'boolean'),
+      ]);
+  });
+
+  it('cannot create a shoebox item document with an invalid annotation', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'email',
+      source: 'email-server',
+      sourceId: '1239004',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      },
+      annotations: [
+        {
+          type: 'some-unsupported-type',
+          dataType: 'some-unsupported-data-type',
+          // missing data field
+          // missing annotating user field
+          lastModified: 'not-a-timestamp'
+        }
+      ]
+    };
+
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      3,
+      doc,
+      expectedDocType,
+      [
+        errorFormatter.enumPredefinedValueViolation('annotations[0].type', [ 'embedded' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[0].dataType', [ 'user-metadata' ]),
+        errorFormatter.requiredValueViolation('annotations[0].data'),
+        errorFormatter.requiredValueViolation('annotations[0].annotatingUser'),
+        errorFormatter.datetimeFormatInvalid('annotations[0].lastModified'),
       ]);
   });
 

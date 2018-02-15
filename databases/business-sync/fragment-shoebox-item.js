@@ -67,22 +67,23 @@
       type: 'array',
       required: false,
       arrayElementsValidator: {
-        mustNotBeEmpty: true,
         type: 'object',
         required: true,
         propertyValidators: {
           // indicates what type of annotation this is
           // Only embedded is supported to start
           type: {
-            type: 'string',
+            type: 'enum',
             immutable: true,
-            predefinedValues: [ 'embedded' ],
+            required: true,
+            predefinedValues: [ 'embedded' ]
           },
           // a simple tag describing what type data this annotation is
           // example:  'user-metadata', 'ocr-analysis', 'model-XYZ-classification'
           dataType: {
-            type: 'string',
+            type: 'enum',
             immutable: true,
+            required: true,
             predefinedValues: [ 'user-metadata' ]
           },
           // payload, pretty much unrestricted at this point
@@ -93,12 +94,13 @@
           // timestamp recording when this annotation was last updated
           lastModified: {
             type: 'datetime',
-
+            required: true
           },
           // ID of the annotating user
           annotatingUser: {
             type: 'integer',
             minimumValueExclusive: 0,
+            required: true
           }
         }
       }
