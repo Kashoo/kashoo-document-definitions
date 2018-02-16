@@ -50,24 +50,32 @@ describe('business-sync shoebox item document definition', function() {
       data: {
         foo: 'bar'
       },
-      annotations: [
-        {
-          type: 'embedded',
-          dataType: 'user-metadata',
-          data: {
-            'some-metadata-field': 'some random user provided metadata',
-            'another-field': 'more data'
-          },
-          modifications: [
-            {
-              timestamp: '2017-02-18T18:57:35.328-08:00',
-              userId: 1234
-            }
-          ]
-        }
-      ],
+      annotations: {
+        metadata: [
+          {
+            type: 'embedded',
+            dataType: 'metadata',
+            data: {
+              'some-metadata-field': 'some random user provided metadata',
+              'another-field': 'more data'
+            },
+            modifications: [
+              {
+                timestamp: '2017-02-18T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          }
+        ]
+      },
       processed: {
-        userId: 333,
+        source: {
+          type: 'books-user',
+          id: '1998485'
+        },
         timestamp: '2017-02-18T18:57:35.328-08:00'
       },
       unknownProp: 'some-value'
@@ -99,7 +107,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'object'),
-        errorFormatter.typeConstraintViolation('annotations', 'array'),
+        errorFormatter.typeConstraintViolation('annotations', 'hashtable'),
         errorFormatter.typeConstraintViolation('processed', 'object'),
       ]);
   });
@@ -114,19 +122,23 @@ describe('business-sync shoebox item document definition', function() {
       data: {
         foo: 'bar'
       },
-      annotations: [
-        {
-          type: 'some-unsupported-type',
-          dataType: 'some-unsupported-data-type',
-          // missing data field
-          modifications: [
-            { userId: 0, timestamp: 'not-a-date' }, // user Id cannot be 0, timestamp not valid format
-            { timestamp: 444 } // missing userId, timestamp not a string
-          ]
-        }
-      ],
+      annotations: {
+        metadata: [
+          {
+            type: 'some-unsupported-type',
+            dataType: 'some-unsupported-data-type',
+            // missing data field
+            modifications: [
+              { source: 0, timestamp: 'not-a-date' }, // source should be object, timestamp not valid format
+              { timestamp: 444 } // missing source, timestamp not a string
+            ]
+          }
+        ]
+      },
       processed: {
-        userId: 34.5,
+        source: {
+          id: '' // missing type field
+        },
         timestamp: "not-a-timestampt"
       }
     };
@@ -137,15 +149,18 @@ describe('business-sync shoebox item document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.enumPredefinedValueViolation('annotations[0].type', [ 'embedded' ]),
-        errorFormatter.enumPredefinedValueViolation('annotations[0].dataType', [ 'user-metadata' ]),
-        errorFormatter.requiredValueViolation('annotations[0].data'),
-        errorFormatter.minimumValueExclusiveViolation('annotations[0].modifications[0].userId', 0),
-        errorFormatter.datetimeFormatInvalid('annotations[0].modifications[0].timestamp'),
-        errorFormatter.typeConstraintViolation('annotations[0].modifications[1].timestamp', 'datetime'),
-        errorFormatter.requiredValueViolation('annotations[0].modifications[1].userId'),
-        errorFormatter.datetimeFormatInvalid('processed.timestamp', 'datetime'),
-        errorFormatter.typeConstraintViolation('processed.userId', 'integer'),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record' ]),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
+        errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'datetime'),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
+        errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[1].timestamp'),
+        errorFormatter.datetimeFormatInvalid('processed.timestamp'),
+        errorFormatter.mustNotBeEmptyViolation('processed.source.id'),
+        errorFormatter.requiredValueViolation('processed.source.type'),
       ]);
   });
 
