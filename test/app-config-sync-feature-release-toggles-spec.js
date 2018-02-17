@@ -15,12 +15,12 @@ describe('app-config-sync feature release toggle document definition', function(
   });
 
   it('refuses a document with invalid content', function() {
-    var doc = { _id: 'featureReleaseToggles', enabledFeatures: 72 };
+    var doc = { _id: 'featureReleaseToggles', enabledFeatures: [ '~' ] };
 
     testHelper.verifyDocumentNotCreated(
       doc,
       'featureReleaseToggles',
-      errorFormatter.typeConstraintViolation('enabledFeatures', 'array'),
+      errorFormatter.regexPatternItemViolation('enabledFeatures[0]', /^[a-z0-9_-]+$/),
       expectedChannels);
   });
 });

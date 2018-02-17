@@ -16,7 +16,7 @@
         type: 'string',
         mustNotBeEmpty: true,
         required: true,
-        regex: featureToggleNameRegex
+        regexPattern: featureToggleNameRegex
       }
     }
   }
