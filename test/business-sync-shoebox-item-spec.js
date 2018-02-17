@@ -13,7 +13,7 @@ describe('business-sync shoebox item document definition', function() {
   it('successfully creates a valid shoebox item document', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       sourceId: '1239004',
       received: '2016-06-18T18:57:35.328-08:00',
@@ -43,7 +43,7 @@ describe('business-sync shoebox item document definition', function() {
   it('successfully creates a shoebox item document with a missing previous data field', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       sourceId: '1239004',
       received: '2016-06-18T18:57:35.328-08:00',
@@ -72,7 +72,7 @@ describe('business-sync shoebox item document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.typeConstraintViolation('type', 'string'),
+        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email' ]),
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.datetimeFormatInvalid('received'),
@@ -80,10 +80,32 @@ describe('business-sync shoebox item document definition', function() {
       ]);
   });
 
+  it('cannot create a shoebox item document with an invalid type', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'foo',
+      source: 'yodlee',
+      sourceId: '1239004',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      3,
+      doc,
+      expectedDocType,
+      [
+        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email' ])
+      ]);
+  });
+
   it('can successfully replace a valid shoebox item document', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
@@ -93,7 +115,7 @@ describe('business-sync shoebox item document definition', function() {
     };
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
@@ -107,7 +129,7 @@ describe('business-sync shoebox item document definition', function() {
   it('cannot modify the document type, source, or sourceId', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       sourceId: 'yodlee-id',
       received: '2016-06-18T18:57:35.328-08:00',
@@ -118,7 +140,7 @@ describe('business-sync shoebox item document definition', function() {
     };
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.WXY',
-      type: 'bank-record-different',
+      type: 'document',
       source: 'yodlee-different',
       sourceId: 'yodlee-id-different',
       received: '2016-06-18T18:57:35.328-08:00',
@@ -133,7 +155,7 @@ describe('business-sync shoebox item document definition', function() {
   it('cannot delete a shoebox item document', function() {
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank-record',
+      type: 'bank',
       source: 'yodlee',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
