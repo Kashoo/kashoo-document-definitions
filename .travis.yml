@@ -1,6 +1,5 @@
 language: node_js
 
-# Ensure a wide range of Node.js versions are supported from 0.10.x to latest
 node_js:
   - "node"
 
