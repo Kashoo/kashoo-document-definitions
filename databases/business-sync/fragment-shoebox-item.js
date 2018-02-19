@@ -139,7 +139,7 @@
     // indicating whether a record has been processed
     processed: {
       type: 'object',
-      immutable: true,
+      immutableWhenSet: true,
       required: false,
       propertyValidators: {
         source: { // source of the decision/processing

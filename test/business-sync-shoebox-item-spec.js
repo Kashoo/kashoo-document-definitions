@@ -210,6 +210,36 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
   });
 
+  it('can successfully "process" a valid shoebox item document', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      },
+      processed: {
+        timestamp: '2016-06-20T18:00:00.000-08:00',
+        source: {
+          id: '23489',
+          type: 'books.user'
+        }
+      }
+    };
+    var oldDoc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'baz'
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
+  });
+
   it('cannot modify the document type, source, or sourceId', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
