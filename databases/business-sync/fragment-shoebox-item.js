@@ -67,8 +67,7 @@
       type: 'hashtable',
       hashtableKeysValidator: {
         mustNotBeEmpty: false,
-        type: 'enum',
-        predefinedValues: [ 'metadata', 'record' ]
+          regexPattern: new RegExp('^metadata$|^record$|^partial-record$')
       },
       hashtableValuesValidator: {
         type: 'array',
@@ -92,7 +91,7 @@
               type: 'enum',
                 immutable: true,
                 required: true,
-                predefinedValues: [ 'metadata', 'record' ]
+                predefinedValues: [ 'metadata', 'record', 'partial-record' ]
             },
             // payload, pretty much unrestricted at this point
             data: {
