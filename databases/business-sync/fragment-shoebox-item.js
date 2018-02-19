@@ -12,8 +12,7 @@
       type: 'enum',
       predefinedValues: [ 'bank', 'document', 'email' ],
       required: true,
-      immutable: true,
-      mustNotBeEmpty: true
+      immutable: true
     },
     source: {
       // The source of the item (yodlee, shoebox-ui...)

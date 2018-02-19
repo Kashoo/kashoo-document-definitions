@@ -64,9 +64,7 @@ describe('business-sync payment processor customer default document definition',
       doc,
       oldDoc,
       expectedDocType,
-      [
-        'required item "defaultPaymentProcessor" is missing',
-      ]);
+      [ errorFormatter.requiredValueViolation('defaultPaymentProcessor') ]);
   });
 
   it('successfully deletes a payment processor customer default summary document', function() {
