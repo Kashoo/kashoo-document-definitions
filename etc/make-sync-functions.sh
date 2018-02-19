@@ -12,11 +12,15 @@ for bucketPath in "$databasesDir"/*; do
   bucketName=$(basename "$bucketPath")
 
   outputDir="build/sync-functions/$bucketName"
+  docDefinitionsFile="$databasesDir/$bucketName/doc-definitions.js"
   syncFuncFile="$outputDir/sync-function.js"
+
+  echo "Validating $bucketName document definitions"
+  node_modules/.bin/synctos-validate "$docDefinitionsFile"
 
   mkdir -p "$outputDir"
 
-  node_modules/synctos/make-sync-function "$databasesDir/$bucketName/doc-definitions.js" "$syncFuncFile"
+  node_modules/.bin/synctos "$docDefinitionsFile" "$syncFuncFile"
 
   echo "Linting generated $bucketName sync function\n"
   node_modules/jshint/bin/jshint "$syncFuncFile"
