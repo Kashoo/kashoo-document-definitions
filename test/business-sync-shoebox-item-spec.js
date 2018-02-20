@@ -40,7 +40,7 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
-  it('successfully creates a shoebox item document with a missing previous data field', function() {
+  it('successfully creates a shoebox item document with a missing previous data field and a collection of valid annotations', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
@@ -49,6 +49,34 @@ describe('business-sync shoebox item document definition', function() {
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
+      },
+      annotations: {
+        metadata: [
+          {
+            type: 'embedded',
+            dataType: 'metadata',
+            data: {
+              'some-metadata-field': 'some random user provided metadata',
+              'another-field': 'more data'
+            },
+            modifications: [
+              {
+                timestamp: '2017-02-18T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          }
+        ]
+      },
+      processed: {
+        source: {
+          type: 'books-user',
+          id: '1998485'
+        },
+        timestamp: '2017-02-18T18:57:35.328-08:00'
       },
       unknownProp: 'some-value'
     };
@@ -63,7 +91,9 @@ describe('business-sync shoebox item document definition', function() {
       source: '',
       sourceId: 982784,
       received: 'some non-date',
-      data: 2.4
+      data: 2.4,
+      annotations: 'a string annotation field',
+      processed: 1233
     };
 
     businessSyncSpecHelper.verifyDocumentNotCreated(
@@ -76,7 +106,61 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.datetimeFormatInvalid('received'),
-        errorFormatter.typeConstraintViolation('data', 'object')
+        errorFormatter.typeConstraintViolation('data', 'object'),
+        errorFormatter.typeConstraintViolation('annotations', 'hashtable'),
+        errorFormatter.typeConstraintViolation('processed', 'object'),
+      ]);
+  });
+
+  it('cannot create a shoebox item document with an invalid annotation', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'email',
+      source: 'email-server',
+      sourceId: '1239004',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      },
+      annotations: {
+        metadata: [
+          {
+            type: 'some-unsupported-type',
+            dataType: 'some-unsupported-data-type',
+            // missing data field
+            modifications: [
+              { source: 0, timestamp: 'not-a-date' }, // source should be object, timestamp not valid format
+              { timestamp: 444 } // missing source, timestamp not a string
+            ]
+          }
+        ]
+      },
+      processed: {
+        source: {
+          id: '' // missing type field
+        },
+        timestamp: "not-a-timestampt"
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      3,
+      doc,
+      expectedDocType,
+      [
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record', 'partial-record' ]),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
+        errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'datetime'),
+        errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
+        errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[1].timestamp'),
+        errorFormatter.datetimeFormatInvalid('processed.timestamp'),
+        errorFormatter.mustNotBeEmptyViolation('processed.source.id'),
+        errorFormatter.requiredValueViolation('processed.source.type'),
       ]);
   });
 
@@ -121,6 +205,36 @@ describe('business-sync shoebox item document definition', function() {
       data: {
         foo: 'baz'
       },
+    };
+
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
+  });
+
+  it('can successfully "process" a valid shoebox item document', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      },
+      processed: {
+        timestamp: '2016-06-20T18:00:00.000-08:00',
+        source: {
+          id: '23489',
+          type: 'books.user'
+        }
+      }
+    };
+    var oldDoc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'baz'
+      }
     };
 
     businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);

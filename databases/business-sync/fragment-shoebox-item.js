@@ -61,6 +61,106 @@
           }
         }
       }
+    },
+    // map of annotations by 'data type' key -> array of annotations of that type
+    annotations: {
+      type: 'hashtable',
+      hashtableKeysValidator: {
+        mustNotBeEmpty: false,
+          regexPattern: new RegExp('^metadata$|^record$|^partial-record$')
+      },
+      hashtableValuesValidator: {
+        type: 'array',
+        required: true,
+        mustNotBeEmpty: true,
+        arrayElementsValidator: {
+          type: 'object',
+          required: true,
+          propertyValidators: {
+            // indicates what type of annotation this is
+            // Only embedded is supported to start
+            type: {
+              type: 'enum',
+                immutable: true,
+                required: true,
+                predefinedValues: [ 'embedded' ]
+            },
+            // a simple tag describing what type data this annotation is
+            // example:  'user-metadata', 'ocr-analysis', 'model-XYZ-classification'
+            dataType: {
+              type: 'enum',
+                immutable: true,
+                required: true,
+                predefinedValues: [ 'metadata', 'record', 'partial-record' ]
+            },
+            // payload, pretty much unrestricted at this point
+            data: {
+              type: 'object',
+              required: true
+            },
+            // Array of timestamp and user IDs of modifications to this annotation
+            modifications: {
+              type: 'array',
+              mustNotBeEmpty: true,
+              required: true,
+              arrayElementsValidator: {
+                type: 'object',
+                // immutable: true,  hesitant to enable this.  It would require that clients ensure this array remains sorted by chronologically by timestamp.
+                propertyValidators: {
+                  source: { // source of the annotation
+                    type: 'object',
+                      required: true,
+                      propertyValidators: {
+                      type: {
+                        type: 'string',
+                          required: true,
+                          mustNotBeEmpty: true
+                      },
+                      id: {
+                        type: 'string',
+                          required: true,
+                          mustNotBeEmpty: true
+                      }
+                    }
+                  },
+                  timestamp: {
+                    type: 'datetime',
+                    required: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    // indicating whether a record has been processed
+    processed: {
+      type: 'object',
+      immutableWhenSet: true,
+      required: false,
+      propertyValidators: {
+        source: { // source of the decision/processing
+          type: 'object',
+          required: true,
+          propertyValidators: {
+            type: {
+              type: 'string',
+              required: true,
+              mustNotBeEmpty: true
+            },
+            id: {
+              type: 'string',
+              required: true,
+              mustNotBeEmpty: true
+            }
+          }
+        },
+        timestamp: {
+          type: 'datetime',
+          required: true
+        }
+      }
     }
   }
 }
