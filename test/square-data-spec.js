@@ -15,7 +15,10 @@ describe('square-data database:', function() {
       var doc = {
         _id: 'merchant.3.' + documentIdType + '.2',
         id: documentIdType + '-ID',
-        entity: { somekey: 'somevalue' }
+        entity: { somekey: 'somevalue' },
+        lastModified: '2016-02-29T17:13:43.666Z',
+        kashooId: 12345,
+        processingFailure: 'this is a processing failure'
       };
 
       verifyDocumentCreated(basePrivilege, 3, doc);
@@ -26,7 +29,9 @@ describe('square-data database:', function() {
         _id: 'merchant.3.' + documentIdType + '.2',
         id: 79,
         kashooId: 'some-string',
-        entity: [ 'not', 'the', 'right', 'type' ]
+        entity: [ 'not', 'the', 'right', 'type' ],
+        lastModified: 'lkjasdflkj',
+        processingFailure: 98213098
       };
 
       verifyDocumentNotCreated(
@@ -37,7 +42,9 @@ describe('square-data database:', function() {
         [
           errorFormatter.typeConstraintViolation('id', 'string'),
           errorFormatter.typeConstraintViolation('kashooId', 'integer'),
-          errorFormatter.typeConstraintViolation('entity', 'object')
+          errorFormatter.typeConstraintViolation('entity', 'object'),
+          errorFormatter.typeConstraintViolation('lastModified', 'datetime'),
+          errorFormatter.typeConstraintViolation('processingFailure', 'string')
         ]);
     });
 
@@ -46,6 +53,7 @@ describe('square-data database:', function() {
         _id: 'merchant.3.' + documentIdType + '.2',
         id: documentIdType + '-ID',
         entity: { somekey: 'somevalue' },
+        lastModified: '2016-02-29T17:13:43.666Z',
         kashooId: 0
       };
 
@@ -57,9 +65,10 @@ describe('square-data database:', function() {
         _id: 'merchant.3.' + documentIdType + '.2',
         id: documentIdType + '-ID',
         entity: { somekey: 'somevalue' },
+        lastModified: '2016-02-29T17:13:43.666Z',
         kashooId: 98230980935
       };
-      var oldDoc = { _id: 'merchant.3.' + documentIdType + '.2' };
+      var oldDoc = { _id: 'merchant.3.' + documentIdType + '.2', lastModified: '2016-02-29T17:14:43.666Z', };
 
       verifyDocumentReplaced(basePrivilege, 3, doc, oldDoc);
     });
@@ -77,7 +86,7 @@ describe('square-data database:', function() {
         doc,
         oldDoc,
         documentIdType,
-        [ errorFormatter.requiredValueViolation('id'), errorFormatter.requiredValueViolation('entity') ]
+        [ errorFormatter.requiredValueViolation('id'), errorFormatter.requiredValueViolation('entity'), errorFormatter.requiredValueViolation('lastModified') ]
       )
     });
 
