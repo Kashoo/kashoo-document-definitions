@@ -56,6 +56,14 @@ function() {
       type: 'object',
       required: true,
       allowUnknownProperties: true
+    },
+    lastModified: {
+      type: 'datetime',
+      required: true
+    },
+    processingFailure: {
+      type: 'string',
+      mustNotBeEmpty: true
     }
   };
 
