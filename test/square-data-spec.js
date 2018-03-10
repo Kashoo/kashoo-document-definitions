@@ -86,7 +86,7 @@ describe('square-data database:', function() {
         doc,
         oldDoc,
         documentIdType,
-        [ errorFormatter.requiredValueViolation('id'), errorFormatter.requiredValueViolation('entity'), errorFormatter.requiredValueViolation('lastModified') ]
+        [ errorFormatter.requiredValueViolation('id'), errorFormatter.requiredValueViolation('entity') ]
       )
     });
 

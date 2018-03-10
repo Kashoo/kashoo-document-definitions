@@ -58,8 +58,7 @@ function() {
       allowUnknownProperties: true
     },
     lastModified: {
-      type: 'datetime',
-      required: true
+      type: 'datetime'
     },
     processingFailure: {
       type: 'string',
