@@ -69,6 +69,25 @@ describe('business-sync shoebox item document definition', function() {
               }
             ]
           }
+        ],
+        classification: [
+          {
+            type: 'embedded',
+            dataType: 'classification',
+            data: {
+              accountId: 1234,
+              contactId: 4321
+            },
+            modifications: [
+              {
+                timestamp: '2018-01-19T12:00:35.000-11:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          }
         ]
       },
       processed: {
@@ -150,7 +169,7 @@ describe('business-sync shoebox item document definition', function() {
       expectedDocType,
       [
         errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
-        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record', 'partial-record' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record', 'partial-record', 'classification' ]),
         errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
         errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
