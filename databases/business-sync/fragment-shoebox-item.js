@@ -5,7 +5,9 @@
     return createBusinessEntityRegex('shoeboxItem\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+').test(doc._id);
   },
   allowUnknownProperties: true,
-  cannotDelete: true,
+  immutable: function(doc, oldDoc) {
+    return oldDoc.processed !== undefined;
+  },
   propertyValidators: {
     type: {
       // The type of shoebox item (bank transaction, uploaded document, email)

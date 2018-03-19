@@ -229,6 +229,44 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
   });
 
+  it('cannot replace a processed shoebox item document', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      },
+      unknownProp: 'some-value',
+      processed: {
+        timestamp: '2016-06-20T18:00:00.000-08:00',
+        source: {
+          id: '23489',
+          type: 'books.user'
+        }
+      }
+    };
+    var oldDoc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'baz'
+      },
+      processed: {
+        timestamp: '2016-06-20T18:00:00.000-08:00',
+        source: {
+          id: '23489',
+          type: 'books.user'
+        }
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentNotReplaced(expectedBasePrivilege, 3, doc, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ]);
+  });
+
   it('can successfully "process" a valid shoebox item document', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
@@ -285,7 +323,7 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentNotReplaced(expectedBasePrivilege, 3, doc, oldDoc, expectedDocType, [ errorFormatter.immutableItemViolation('type'), errorFormatter.immutableItemViolation('source'), errorFormatter.immutableItemViolation('sourceId') ]);
   });
 
-  it('cannot delete a shoebox item document', function() {
+  it('cannot delete a processed shoebox item document', function() {
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
@@ -294,9 +332,16 @@ describe('business-sync shoebox item document definition', function() {
       data: {
         foo: 'bar'
       },
-      unknownProp: 'some-value'
+      unknownProp: 'some-value',
+      processed: {
+        timestamp: '2016-06-20T18:00:00.000-08:00',
+        source: {
+          id: '23489',
+          type: 'books.user'
+        }
+      }
     };
 
-    businessSyncSpecHelper.verifyDocumentNotDeleted(expectedBasePrivilege, 3, oldDoc, expectedDocType, [ errorFormatter.cannotDeleteDocViolation() ]);
+    businessSyncSpecHelper.verifyDocumentNotDeleted(expectedBasePrivilege, 3, oldDoc, expectedDocType, [ errorFormatter.immutableDocViolation() ]);
   });
 });
