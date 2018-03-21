@@ -1,12 +1,15 @@
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 var staffChannel = 'STAFF';
 var documentType = 'squareData';
 
 describe('business-sync square data entity: ', function() {
+  var testFixture;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
   });
 
   /* Generic function for doing a set of common tests against a given document type */
@@ -94,24 +97,24 @@ describe('business-sync square data entity: ', function() {
   describe('payment document definition', function() { testDocumentType('payment') });
   describe('refund document definition', function() { testDocumentType('refund') });
   describe('settlement document definition', function() { testDocumentType('settlement') });
+
+  function verifyDocumentCreated(merchantId, doc) {
+    testFixture.verifyDocumentCreated(doc, [ staffChannel, merchantId ]);
+  }
+
+  function verifyDocumentNotCreated(merchantId, doc, docType, expectedErrorMessages) {
+    testFixture.verifyDocumentNotCreated(doc, docType, expectedErrorMessages, [ staffChannel, merchantId ]);
+  }
+
+  function verifyDocumentReplaced(merchantId, doc, oldDoc) {
+    testFixture.verifyDocumentReplaced(doc, oldDoc, [ staffChannel, merchantId ]);
+  }
+
+  function verifyDocumentNotReplaced(merchantId, doc, oldDoc, docType, expectedErrorMessages) {
+    testFixture.verifyDocumentNotReplaced(doc, oldDoc, docType, expectedErrorMessages, [ staffChannel, merchantId ]);
+  }
+
+  function verifyDocumentDeleted(merchantId, oldDoc) {
+    testFixture.verifyDocumentDeleted(oldDoc, [ staffChannel, merchantId ]);
+  }
 });
-
-function verifyDocumentCreated(merchantId, doc) {
-  testHelper.verifyDocumentCreated(doc, [ staffChannel, merchantId ]);
-}
-
-function verifyDocumentNotCreated(merchantId, doc, docType, expectedErrorMessages) {
-  testHelper.verifyDocumentNotCreated(doc, docType, expectedErrorMessages, [ staffChannel, merchantId ]);
-}
-
-function verifyDocumentReplaced(merchantId, doc, oldDoc) {
-  testHelper.verifyDocumentReplaced(doc, oldDoc, [ staffChannel, merchantId ]);
-}
-
-function verifyDocumentNotReplaced(merchantId, doc, oldDoc, docType, expectedErrorMessages) {
-  testHelper.verifyDocumentNotReplaced(doc, oldDoc, docType, expectedErrorMessages, [ staffChannel, merchantId ]);
-}
-
-function verifyDocumentDeleted(merchantId, oldDoc) {
-  testHelper.verifyDocumentDeleted(oldDoc, [ staffChannel, merchantId ]);
-}

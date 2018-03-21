@@ -1,10 +1,14 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync merchant accounts reference document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   var expectedDocType = 'merchantAccountsReference';
@@ -33,7 +37,7 @@ describe('business-sync merchant accounts reference document definition', functi
       }
     };
 
-    testHelper.verifyDocumentCreated(doc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentCreated(doc, businessSyncSpecHelper.staffChannel);
   });
 
   it('cannot create a merchant accounts reference document when the properties are invalid', function() {
@@ -58,7 +62,7 @@ describe('business-sync merchant accounts reference document definition', functi
       }
     };
 
-    testHelper.verifyDocumentNotCreated(
+    testFixture.verifyDocumentNotCreated(
       doc,
       expectedDocType,
       [
@@ -90,7 +94,7 @@ describe('business-sync merchant accounts reference document definition', functi
       }
     };
 
-    testHelper.verifyDocumentReplaced(doc, oldDoc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentReplaced(doc, oldDoc, businessSyncSpecHelper.staffChannel);
   });
 
   it('cannot replace a merchant accounts reference document when the properties are invalid', function() {
@@ -109,7 +113,7 @@ describe('business-sync merchant accounts reference document definition', functi
     };
     var oldDoc = { _id: 'biz.1.merchantAccounts' };
 
-    testHelper.verifyDocumentNotReplaced(
+    testFixture.verifyDocumentNotReplaced(
       doc,
       oldDoc,
       expectedDocType,
@@ -135,6 +139,6 @@ describe('business-sync merchant accounts reference document definition', functi
       accounts: { }
     };
 
-    testHelper.verifyDocumentDeleted(doc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentDeleted(doc, businessSyncSpecHelper.staffChannel);
   });
 });
