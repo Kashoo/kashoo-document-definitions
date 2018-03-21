@@ -1,26 +1,30 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync business configuration document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   function verifyBusinessConfigCreated(businessId, doc) {
-    testHelper.verifyDocumentCreated(doc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_BUSINESS' ]);
+    testFixture.verifyDocumentCreated(doc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_BUSINESS' ]);
   }
 
   function verifyBusinessConfigReplaced(businessId, doc, oldDoc) {
-    testHelper.verifyDocumentReplaced(doc, oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_BUSINESS' ]);
+    testFixture.verifyDocumentReplaced(doc, oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_BUSINESS' ]);
   }
 
   function verifyBusinessConfigDeleted(businessId, oldDoc) {
-    testHelper.verifyDocumentDeleted(oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-REMOVE_BUSINESS' ]);
+    testFixture.verifyDocumentDeleted(oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-REMOVE_BUSINESS' ]);
   }
 
   function verifyBusinessConfigRejected(businessId, doc, oldDoc, expectedErrorMessages) {
-    testHelper.verifyDocumentNotReplaced(
+    testFixture.verifyDocumentNotReplaced(
       doc,
       oldDoc,
       'business',

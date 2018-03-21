@@ -1,33 +1,37 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync notification document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   var expectedDocType = 'notification';
   var expectedBasePrivilege = 'NOTIFICATIONS';
 
   function verifyNotificationCreated(businessId, doc) {
-    testHelper.verifyDocumentCreated(doc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentCreated(doc, businessSyncSpecHelper.staffChannel);
   }
 
   function verifyNotificationReplaced(businessId, doc, oldDoc) {
-    testHelper.verifyDocumentReplaced(doc, oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_' + expectedBasePrivilege ]);
+    testFixture.verifyDocumentReplaced(doc, oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-CHANGE_' + expectedBasePrivilege ]);
   }
 
   function verifyNotificationDeleted(businessId, oldDoc) {
-    testHelper.verifyDocumentDeleted(oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-REMOVE_' + expectedBasePrivilege ]);
+    testFixture.verifyDocumentDeleted(oldDoc, [ businessSyncSpecHelper.staffChannel, businessId + '-REMOVE_' + expectedBasePrivilege ]);
   }
 
   function verifyNotificationNotCreated(businessId, doc, expectedErrorMessages) {
-    testHelper.verifyDocumentNotCreated(doc, expectedDocType, expectedErrorMessages, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentNotCreated(doc, expectedDocType, expectedErrorMessages, businessSyncSpecHelper.staffChannel);
   }
 
   function verifyNotificationNotReplaced(businessId, doc, oldDoc, expectedErrorMessages) {
-    testHelper.verifyDocumentNotReplaced(
+    testFixture.verifyDocumentNotReplaced(
       doc,
       oldDoc,
       expectedDocType,

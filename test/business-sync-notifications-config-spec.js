@@ -1,10 +1,14 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync notifications configuration document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   var expectedDocType = 'notificationsConfig';

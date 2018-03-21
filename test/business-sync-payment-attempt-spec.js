@@ -1,18 +1,22 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync payment processing attempt document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   function verifyPaymentAttemptWritten(businessId, doc, oldDoc) {
-    testHelper.verifyDocumentAccepted(doc, oldDoc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentAccepted(doc, oldDoc, businessSyncSpecHelper.staffChannel);
   }
 
   function verifyPaymentAttemptNotWritten(businessId, doc, oldDoc, expectedErrorMessages) {
-    testHelper.verifyDocumentRejected(doc, oldDoc, 'paymentAttempt', expectedErrorMessages, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentRejected(doc, oldDoc, 'paymentAttempt', expectedErrorMessages, businessSyncSpecHelper.staffChannel);
   }
 
   it('successfully creates a valid payment processing attempt document', function() {
