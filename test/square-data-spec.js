@@ -1,11 +1,14 @@
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 var staffChannel = 'STAFF';
 
 describe('square-data database:', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/square-data/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/square-data/sync-function.js');
   });
 
   /* Generic function for doing a set of common tests against a given document type */
@@ -106,24 +109,24 @@ describe('square-data database:', function() {
   describe('payment document definition', function() { testDocumentType('PAYMENT', 'payment') });
   describe('refund document definition', function() { testDocumentType('REFUND', 'refund') });
   describe('settlement document definition', function() { testDocumentType('SETTLEMENT', 'settlement') });
+
+  function verifyDocumentCreated(basePrivilegeName, merchantId, doc) {
+    testFixture.verifyDocumentCreated(doc, [ staffChannel, merchantId + '-ADD_' + basePrivilegeName ]);
+  }
+
+  function verifyDocumentNotCreated(basePrivilegeName, merchantId, doc, docType, expectedErrorMessages) {
+    testFixture.verifyDocumentNotCreated(doc, docType, expectedErrorMessages, [ staffChannel, merchantId + '-ADD_' + basePrivilegeName ]);
+  }
+
+  function verifyDocumentReplaced(basePrivilegeName, merchantId, doc, oldDoc) {
+    testFixture.verifyDocumentReplaced(doc, oldDoc, [ staffChannel, merchantId + '-CHANGE_' + basePrivilegeName ]);
+  }
+
+  function verifyDocumentNotReplaced(basePrivilegeName, merchantId, doc, oldDoc, docType, expectedErrorMessages) {
+    testFixture.verifyDocumentNotReplaced(doc, oldDoc, docType, expectedErrorMessages, [ staffChannel, merchantId + '-CHANGE_' + basePrivilegeName ]);
+  }
+
+  function verifyDocumentDeleted(basePrivilegeName, merchantId, oldDoc) {
+    testFixture.verifyDocumentDeleted(oldDoc, [ staffChannel, merchantId + '-REMOVE_' + basePrivilegeName ]);
+  }
 });
-
-function verifyDocumentCreated(basePrivilegeName, merchantId, doc) {
-  testHelper.verifyDocumentCreated(doc, [ staffChannel, merchantId + '-ADD_' + basePrivilegeName ]);
-}
-
-function verifyDocumentNotCreated(basePrivilegeName, merchantId, doc, docType, expectedErrorMessages) {
-  testHelper.verifyDocumentNotCreated(doc, docType, expectedErrorMessages, [ staffChannel, merchantId + '-ADD_' + basePrivilegeName ]);
-}
-
-function verifyDocumentReplaced(basePrivilegeName, merchantId, doc, oldDoc) {
-  testHelper.verifyDocumentReplaced(doc, oldDoc, [ staffChannel, merchantId + '-CHANGE_' + basePrivilegeName ]);
-}
-
-function verifyDocumentNotReplaced(basePrivilegeName, merchantId, doc, oldDoc, docType, expectedErrorMessages) {
-  testHelper.verifyDocumentNotReplaced(doc, oldDoc, docType, expectedErrorMessages, [ staffChannel, merchantId + '-CHANGE_' + basePrivilegeName ]);
-}
-
-function verifyDocumentDeleted(basePrivilegeName, merchantId, oldDoc) {
-  testHelper.verifyDocumentDeleted(oldDoc, [ staffChannel, merchantId + '-REMOVE_' + basePrivilegeName ]);
-}

@@ -1,18 +1,22 @@
-var businessSyncSpecHelper = require('./modules/business-sync-spec-helper.js');
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var businessSyncSpecHelperMaker = require('./helpers/business-sync-spec-helper-maker.js');
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync payment processor settlement document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
   function verifySettlementWritten(businessId, doc, oldDoc) {
-    testHelper.verifyDocumentAccepted(doc, oldDoc, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentAccepted(doc, oldDoc, businessSyncSpecHelper.staffChannel);
   }
 
   function verifySettlementNotWritten(businessId, doc, oldDoc, expectedErrorMessages) {
-    testHelper.verifyDocumentRejected(doc, oldDoc, 'paymentProcessorSettlement', expectedErrorMessages, businessSyncSpecHelper.staffChannel);
+    testFixture.verifyDocumentRejected(doc, oldDoc, 'paymentProcessorSettlement', expectedErrorMessages, businessSyncSpecHelper.staffChannel);
   }
 
   it('successfully creates a valid payment processor settlement document', function() {
@@ -41,7 +45,7 @@ describe('business-sync payment processor settlement document definition', funct
       processorId: 'ZYX',
       capturedAt: 'not-a-capturedAt',
       processedAt: 2123,
-      currency: 'USD',
+      currency: 'USDD',
       processorMessage: 'my-processor-message'
     };
 
@@ -50,13 +54,12 @@ describe('business-sync payment processor settlement document definition', funct
       doc,
       undefined,
       [
-        errorFormatter.maximumValueViolation('businessId', 12345),
+        errorFormatter.documentIdRegexPatternViolation(/^biz\.54321\.paymentProcessor\.ZYX\.processedSettlement\.not-foo-bar$/),
         errorFormatter.requiredValueViolation('transferId'),
-        errorFormatter.mustEqualViolation('processorId', 'XYZ'),
-        errorFormatter.mustEqualViolation('settlementId', 'foo-bar'),
         errorFormatter.datetimeFormatInvalid('capturedAt'),
         errorFormatter.typeConstraintViolation('processedAt', 'datetime'),
-        errorFormatter.requiredValueViolation('amount')
+        errorFormatter.requiredValueViolation('amount'),
+        errorFormatter.regexPatternItemViolation('currency', /^[A-Z]{3}$/)
       ]);
   });
 

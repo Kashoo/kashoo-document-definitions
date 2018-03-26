@@ -26,7 +26,7 @@ Also endeavour to apply strict constraints to the properties of document definit
 
 ### Testing
 
-Every change should include comprehensive test cases defined in the `test` directory using the [expect.js](https://github.com/Automattic/expect.js) assertion and [simple-mock](https://github.com/jupiter/simple-mock) mocking libraries. Tests are executed by the [Mocha](http://mochajs.org/) test runner. Make use of the built-in synctos test-helper module to simplify test cases. See the synctos [Testing](https://github.com/Kashoo/synctos/blob/master/README.md#testing) documentation for more info.
+Every change should include comprehensive test cases defined in the `test` directory using the [expect.js](https://github.com/Automattic/expect.js) assertion and [simple-mock](https://github.com/jupiter/simple-mock) mocking libraries. Tests are executed by the [Mocha](http://mochajs.org/) test runner. Make use of the built-in synctos test-fixture-maker module to simplify test cases. See the synctos [Testing](https://github.com/Kashoo/synctos/blob/master/README.md#testing) documentation for more info.
 
 To execute the test suite (run from this directory): `npm test`
 

@@ -1,9 +1,12 @@
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('app-config-sync feature release toggle definitions documents definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
   });
 
   var expectedChannels = [ 'edit-feature-release-toggle-definitions', 'edit-config' ];
@@ -26,7 +29,7 @@ describe('app-config-sync feature release toggle definitions documents definitio
       ]
     };
 
-    testHelper.verifyDocumentCreated(doc, expectedChannels);
+    testFixture.verifyDocumentCreated(doc, expectedChannels);
   });
 
   it('refuses a document with invalid content', function() {
@@ -38,7 +41,7 @@ describe('app-config-sync feature release toggle definitions documents definitio
       ]
     };
 
-    testHelper.verifyDocumentNotCreated(
+    testFixture.verifyDocumentNotCreated(
       invalidDoc,
       'featureReleaseToggleDefinitions',
       [

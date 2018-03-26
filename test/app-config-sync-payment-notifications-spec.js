@@ -1,9 +1,12 @@
-var testHelper = require('synctos').testHelper;
-var errorFormatter = testHelper.validationErrorFormatter;
+var synctos = require('synctos');
+var testFixtureMaker = synctos.testFixtureMaker;
+var errorFormatter = synctos.validationErrorFormatter;
 
 describe('app-config-sync payment notification templates document definition', function() {
+  var testFixture, businessSyncSpecHelper;
+
   beforeEach(function() {
-    testHelper.initSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
   });
 
   var expectedChannels = [ 'edit-config' ];
@@ -22,7 +25,7 @@ describe('app-config-sync payment notification templates document definition', f
       lockedPeriodFailureBodyTemplate: 'Locked Period'
     };
 
-    testHelper.verifyDocumentCreated(validDoc, expectedChannels);
+    testFixture.verifyDocumentCreated(validDoc, expectedChannels);
   });
 
   it('refuses a document with invalid content', function() {
@@ -39,7 +42,7 @@ describe('app-config-sync payment notification templates document definition', f
       lockedPeriodFailureBodyTemplate: 'Locked Period'
     };
 
-    testHelper.verifyDocumentNotCreated(
+    testFixture.verifyDocumentNotCreated(
       invalidDoc,
       'paymentNotificationTemplates',
       [
