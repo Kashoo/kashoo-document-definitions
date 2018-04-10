@@ -4,11 +4,11 @@ var testFixtureMaker = synctos.testFixtureMaker;
 var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync merchant accounts reference document definition', function() {
-  var testFixture, businessSyncSpecHelper;
+  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+  var businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
 
-  beforeEach(function() {
-    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
-    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
+  afterEach(function() {
+    testFixture.resetTestEnvironment();
   });
 
   var expectedDocType = 'merchantAccountsReference';
@@ -23,7 +23,7 @@ describe('business-sync merchant accounts reference document definition', functi
           merchantAccountId: 'my-merchant-account1',
           authorization: 'my-access-token1',
           paymentProcessorDefinitionId: 'my-payment-processor1',
-          registrationConfirmed: '2017-02-17T18:44:35.128-0800'
+          registrationConfirmed: '2017-02-17T18:44:35.128-08:00'
         },
         account2: {
           provider: 'bar',
@@ -31,7 +31,7 @@ describe('business-sync merchant accounts reference document definition', functi
           authorization: 'my-access-token2',
           paymentProcessorDefinitionId: 'my-payment-processor2',
           registrationConfirmationRequisitions: [
-            '2017-02-16T07:15:32.767-0800'
+            '2017-02-16T07:15:32.767-08:00'
           ]
         }
       }
