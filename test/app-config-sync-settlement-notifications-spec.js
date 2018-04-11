@@ -3,10 +3,10 @@ var testFixtureMaker = synctos.testFixtureMaker;
 var errorFormatter = synctos.validationErrorFormatter;
 
 describe('app-config-sync settlement notification templates document definition', function() {
-  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
+  var testFixture, businessSyncSpecHelper;
 
-  afterEach(function() {
-    testFixture.resetTestEnvironment();
+  beforeEach(function() {
+    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/app-config-sync/sync-function.js');
   });
 
   var expectedChannels = [ 'edit-config' ];
