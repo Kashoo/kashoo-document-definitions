@@ -2,11 +2,11 @@
   "name": "kashoo-document-definitions",
   "version": "1.0.0",
   "dependencies": {
-    "synctos": "^2.3.0"
+    "synctos": "^2.2.1"
   },
   "devDependencies": {
-    "jshint": "^2.9.5",
-    "mocha": "^5.0.5"
+    "jshint": "^2.9.4",
+    "mocha": "^5.0.0"
   },
   "scripts": {
     "test": "etc/prepare-tests.sh && node_modules/.bin/mocha",
