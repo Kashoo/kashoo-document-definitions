@@ -2,7 +2,7 @@
   "name": "kashoo-document-definitions",
   "version": "1.0.0",
   "dependencies": {
-    "synctos": "^2.3.0"
+    "synctos": "^2.4.0"
   },
   "devDependencies": {
     "jshint": "^2.9.5",
