@@ -67,7 +67,7 @@
       type: 'hashtable',
       hashtableKeysValidator: {
         mustNotBeEmpty: false,
-          regexPattern: new RegExp('^metadata$|^record$|^partial-record|classification$')
+          regexPattern: new RegExp('^metadata$|^record$|^partial-record$|^classification$|^classification-suggestion$')
       },
       hashtableValuesValidator: {
         type: 'array',
