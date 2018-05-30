@@ -11,6 +11,7 @@
     rules: {
       type: 'hashtable',
       hashtableKeysValidator: {
+        // ID is used to refer to a rule in annotations that pertain to it.  It should be a string UUID
         mustNotBeEmpty: true
       },
       hashtableValuesValidator: {

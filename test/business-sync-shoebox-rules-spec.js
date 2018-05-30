@@ -29,7 +29,7 @@ describe('business-sync shoebox import rules document definition', function() {
           suggestions: [
             {
               suggestedField: 'accountNumber',
-              suggestedValue: 2345
+              suggestedValue: '2345'
             },
             {
               suggestedField: 'taxIds',
