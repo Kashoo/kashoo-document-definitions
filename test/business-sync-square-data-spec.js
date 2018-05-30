@@ -6,10 +6,10 @@ var staffChannel = 'STAFF';
 var documentType = 'squareData';
 
 describe('business-sync square data entity: ', function() {
-  var testFixture;
+  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
 
-  beforeEach(function() {
-    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+  afterEach(function() {
+    testFixture.resetTestEnvironment();
   });
 
   /* Generic function for doing a set of common tests against a given document type */

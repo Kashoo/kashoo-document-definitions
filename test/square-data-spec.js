@@ -5,10 +5,10 @@ var errorFormatter = synctos.validationErrorFormatter;
 var staffChannel = 'STAFF';
 
 describe('square-data database:', function() {
-  var testFixture, businessSyncSpecHelper;
+  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/square-data/sync-function.js');
 
-  beforeEach(function() {
-    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/square-data/sync-function.js');
+  afterEach(function() {
+    testFixture.resetTestEnvironment();
   });
 
   /* Generic function for doing a set of common tests against a given document type */
