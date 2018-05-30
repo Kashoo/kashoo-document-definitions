@@ -104,6 +104,9 @@ function() {
     // Generic document for storing outside sourced data
     shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js'),
 
+    // For storing shoebox import rules
+    shoeboxImportRules: importDocumentDefinitionFragment('fragment-shoebox-import-rules.js'),
+
     // For storing Square data entities and any associations
     squareData: importDocumentDefinitionFragment('fragment-square-data.js'),
   };
