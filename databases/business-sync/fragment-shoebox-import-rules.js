@@ -65,6 +65,18 @@
               required: true,
               allowUnknownProperties: true,
               propertyValidators: function(doc, oldDoc, value, oldValue) {
+                var suggestedValueValidator = {
+                  type: value.suggestedField === 'accountNumber' ? 'string' : 'array',
+                  required: true,
+                  mustNotBeEmpty: true
+                };
+                if (value.suggestedField === 'taxIds') {
+                  suggestedValueValidator.arrayElementsValidator = {
+                    type: 'integer',
+                    mustNotBeEmpty: true,
+                    minimumValueExclusive: 0
+                  };
+                }
                 return {
                   // Name of the field the suggestion is intended for.  Field name should imply expected type.
                   suggestedField: {
@@ -73,10 +85,7 @@
                     required: true
                   },
                   // Value of the suggestion
-                  suggestedValue: {
-                    type: value.suggestedField === 'accountNumber' ? 'string' : 'array',
-                    required: true
-                  }
+                  suggestedValue: suggestedValueValidator
                 };
               }
             }
