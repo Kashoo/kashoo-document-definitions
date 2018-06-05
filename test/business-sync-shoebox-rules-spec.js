@@ -86,7 +86,9 @@ describe('business-sync shoebox import rules document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains' ]),
+        errorFormatter.typeConstraintViolation('rules[ABC].criteria[1].value', 'array'),
+        errorFormatter.typeConstraintViolation('rules[ABC].suggestions[0].suggestedValue', 'array'),
+        errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains', 'containsAll' ]),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].field', [ 'description' ]),
         errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[1].value'),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].suggestions[0].suggestedField', [ 'accountNumber', 'taxIds' ]),
@@ -194,7 +196,8 @@ describe('business-sync shoebox import rules document definition', function() {
       oldDoc,
       expectedDocType,
       [
-        errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains' ]),
+        errorFormatter.typeConstraintViolation('rules[ABC].criteria[1].value', 'array'),
+        errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains', 'containsAll' ]),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].field', [ 'description' ]),
         errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[1].value'),
         errorFormatter.requiredValueViolation('rules[ABC].suggestions'),
