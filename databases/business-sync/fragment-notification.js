@@ -44,13 +44,15 @@
     },
     createdAt: {
       // When the notification was first created
-      type: 'datetime',
+      type: 'string',
+      customValidation: customDatetimeValidation,
       required: true,
       immutable: true
     },
     firstReadAt: {
       // When the notification was first read
-      type: 'datetime',
+      type: 'string',
+      customValidation: customDatetimeValidation,
       immutableWhenSet: true
     },
     siteName: {

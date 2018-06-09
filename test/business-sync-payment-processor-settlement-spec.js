@@ -44,7 +44,7 @@ describe('business-sync payment processor settlement document definition', funct
       settlementId: 'not-foo-bar',
       processorId: 'ZYX',
       capturedAt: 'not-a-capturedAt',
-      processedAt: 2123,
+      processedAt: 'not-a-processedAt',
       currency: 'USDD',
       processorMessage: 'my-processor-message'
     };
@@ -57,7 +57,7 @@ describe('business-sync payment processor settlement document definition', funct
         errorFormatter.documentIdRegexPatternViolation(/^biz\.54321\.paymentProcessor\.ZYX\.processedSettlement\.not-foo-bar$/),
         errorFormatter.requiredValueViolation('transferId'),
         errorFormatter.datetimeFormatInvalid('capturedAt'),
-        errorFormatter.typeConstraintViolation('processedAt', 'datetime'),
+        errorFormatter.datetimeFormatInvalid('processedAt'),
         errorFormatter.requiredValueViolation('amount'),
         errorFormatter.regexPatternItemViolation('currency', /^[A-Z]{3}$/)
       ]);
