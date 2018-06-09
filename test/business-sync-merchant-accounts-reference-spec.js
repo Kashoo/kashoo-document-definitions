@@ -23,7 +23,7 @@ describe('business-sync merchant accounts reference document definition', functi
           merchantAccountId: 'my-merchant-account1',
           authorization: 'my-access-token1',
           paymentProcessorDefinitionId: 'my-payment-processor1',
-          registrationConfirmed: '2017-02-17T18:44:35.128-08:00'
+          registrationConfirmed: '2017-02-17T18:44:35.128-0800'
         },
         account2: {
           provider: 'bar',
@@ -31,7 +31,7 @@ describe('business-sync merchant accounts reference document definition', functi
           authorization: 'my-access-token2',
           paymentProcessorDefinitionId: 'my-payment-processor2',
           registrationConfirmationRequisitions: [
-            '2017-02-16T07:15:32.767-08:00'
+            '2017-02-16T07:15:32.767-0800'
           ]
         }
       }
