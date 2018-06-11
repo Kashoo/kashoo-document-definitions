@@ -31,6 +31,48 @@ function() {
     return businessId + '-' + privilege;
   }
 
+  // Constructs the fully qualified path of the top item from the given stack
+  function buildItemPath(validationItemStack, topItemEntry) {
+    var fullItemStack = validationItemStack.slice();
+    fullItemStack.push(topItemEntry);
+
+    var nameComponents = [ ];
+    for (var i = 0; i < fullItemStack.length; i++) {
+      var itemName = fullItemStack[i].itemName;
+
+      if (!itemName) {
+        // Skip null or empty names (e.g. the first element is typically the root of the document, which has no name)
+        continue;
+      } else if (nameComponents.length < 1 || itemName.indexOf('[') === 0) {
+        nameComponents.push(itemName);
+      } else {
+        nameComponents.push('.' + itemName);
+      }
+    }
+
+    return nameComponents.join('');
+  }
+
+  // Determines whether the given value is a supported datetime string. Differs from the built-in `datetime` validation
+  // type in that it treats the colon between the time zone hour and minute components as optional.
+  function isCustomDateTimeString(value) {
+    var regex = /^\d{4}(-\d{2}(-\d{2})?)?(T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?((Z)|([+-]\d{2}:?\d{2}))?)?$/;
+
+    // Verify that it's in ISO 8601 format (via the regex) and that it represents a valid point in time (via Date.parse)
+    return regex.test(value) && !isNaN(Date.parse(value));
+  }
+
+  // Custom validation for a datetime string that treats the colon between the time zone hour and minute components as
+  // optional
+  function customDatetimeValidation(doc, oldDoc, currentItemEntry, validationItemStack) {
+    if (isValueNullOrUndefined(currentItemEntry.itemValue) || isCustomDateTimeString(currentItemEntry.itemValue)) {
+      return [ ];
+    } else {
+      var itemPath = buildItemPath(validationItemStack, currentItemEntry);
+      return [ 'item "' + itemPath + '" must be an ECMAScript simplified ISO 8601 date string with optional time and time zone components' ];
+    }
+  }
+
   // Builds a function that returns the view, add, replace, remove channels extrapolated from the specified base privilege, name which is
   // formatted according to the de facto Books convention of "VIEW_FOOBAR", "ADD_FOOBAR", "CHANGE_FOOBAR" and "REMOVE_FOOBAR" assuming the
   // base privilege name is "FOOBAR". If basePrivilegeName is omitted, only the write channel configuration is set (and only to the "STAFF"

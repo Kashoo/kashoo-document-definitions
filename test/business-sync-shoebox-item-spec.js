@@ -4,11 +4,11 @@ var testFixtureMaker = synctos.testFixtureMaker;
 var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync shoebox item document definition', function() {
-  var testFixture, businessSyncSpecHelper;
+  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+  var businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
 
-  beforeEach(function() {
-    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
-    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
+  afterEach(function() {
+    testFixture.resetTestEnvironment();
   });
 
   var expectedDocType = 'shoeboxItem';
@@ -178,7 +178,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
         errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
-        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'datetime'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'string'),
         errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[1].timestamp'),
         errorFormatter.datetimeFormatInvalid('processed.timestamp'),

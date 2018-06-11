@@ -10,5 +10,5 @@
   "shadow": false,
   "strict": false,
   "undef": true,
-  "predef": [ "access", "channel", "requireAccess", "requireRole", "requireUser", "role" ]
+  "predef": [ "access", "channel", "expiry", "requireAccess", "requireRole", "requireUser", "role" ]
 }

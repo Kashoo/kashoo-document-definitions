@@ -4,11 +4,11 @@ var testFixtureMaker = synctos.testFixtureMaker;
 var errorFormatter = synctos.validationErrorFormatter;
 
 describe('business-sync merchant accounts reference document definition', function() {
-  var testFixture, businessSyncSpecHelper;
+  var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
+  var businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
 
-  beforeEach(function() {
-    testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
-    businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
+  afterEach(function() {
+    testFixture.resetTestEnvironment();
   });
 
   var expectedDocType = 'merchantAccountsReference';
@@ -121,7 +121,8 @@ describe('business-sync merchant accounts reference document definition', functi
         errorFormatter.typeConstraintViolation('accounts[account1].provider', 'string'),
         errorFormatter.typeConstraintViolation('accounts[account1].merchantAccountId', 'string'),
         errorFormatter.typeConstraintViolation('accounts[account1].authorization', 'string'),
-        errorFormatter.typeConstraintViolation('accounts[account1].registrationConfirmed', 'datetime'),
+        errorFormatter.typeConstraintViolation('accounts[account1].registrationConfirmed', 'string'),
+        errorFormatter.datetimeFormatInvalid('accounts[account1].registrationConfirmed'),
         errorFormatter.mustNotBeEmptyViolation('accounts[account1].paymentProcessorDefinitionId'),
         errorFormatter.requiredValueViolation('accounts[account2].authorization'),
         errorFormatter.requiredValueViolation('accounts[account2].merchantAccountId'),

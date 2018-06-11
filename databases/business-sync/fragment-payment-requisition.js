@@ -19,7 +19,8 @@
     },
     issuedAt: {
       // When the payment requisition was sent/issued
-      type: 'datetime'
+      type: 'string',
+      customValidation: customDatetimeValidation
     },
     issuedByUserId: {
       // The ID of the Kashoo user that issued the payment requisition

@@ -24,13 +24,15 @@
     processedAt: {
       // Used to indicate when the notification has been processed for transport (but not necessarily sent yet) by a
       // notification service
-      type: 'datetime',
+      type: 'string',
+      customValidation: customDatetimeValidation,
       required: true,
       immutable: true
     },
     sentAt: {
       // The date/time at which the notification was actually sent. Typically distinct from the date/time at which it was processed.
-      type: 'datetime',
+      type: 'string',
+      customValidation: customDatetimeValidation,
       immutableWhenSet: true
     }
   }

@@ -29,7 +29,8 @@
     },
     received: {
       // The time at which the data was received by the shoebox
-      type: 'datetime',
+      type: 'string',
+      customValidation: customDatetimeValidation,
       required: true
     },
     data: {
@@ -50,7 +51,8 @@
         propertyValidators: {
           received: {
             // Time at which the data was received
-            type: 'datetime',
+            type: 'string',
+            customValidation: customDatetimeValidation,
             required: true
           },
           data: {
@@ -124,7 +126,8 @@
                     }
                   },
                   timestamp: {
-                    type: 'datetime',
+                    type: 'string',
+                    customValidation: customDatetimeValidation,
                     required: true
                   }
                 }
@@ -157,7 +160,8 @@
           }
         },
         timestamp: {
-          type: 'datetime',
+          type: 'string',
+          customValidation: customDatetimeValidation,
           required: true
         }
       }
