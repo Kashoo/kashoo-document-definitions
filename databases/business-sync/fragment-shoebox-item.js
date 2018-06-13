@@ -83,17 +83,17 @@
             // Only embedded is supported to start
             type: {
               type: 'enum',
-                immutable: true,
-                required: true,
-                predefinedValues: [ 'embedded' ]
+              immutable: true,
+              required: true,
+              predefinedValues: [ 'embedded' ]
             },
             // a simple tag describing what type data this annotation is
             // example:  'user-metadata', 'ocr-analysis', 'model-XYZ-classification'
             dataType: {
               type: 'enum',
-                immutable: true,
-                required: true,
-                predefinedValues: [ 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]
+              immutable: true,
+              required: true,
+              predefinedValues: [ 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]
             },
             // payload, pretty much unrestricted at this point
             data: {
@@ -101,10 +101,13 @@
               required: true
             },
             // Array of timestamp and user IDs of modifications to this annotation
+            // Refinement:  constrained to a single element, meaning no modifications are expected
+            // and changes to an annotation should be made as a new annotation
             modifications: {
               type: 'array',
               mustNotBeEmpty: true,
               required: true,
+              maximumLength: 1,
               arrayElementsValidator: {
                 type: 'object',
                 // immutable: true,  hesitant to enable this.  It would require that clients ensure this array remains sorted by chronologically by timestamp.

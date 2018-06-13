@@ -172,6 +172,7 @@ describe('business-sync shoebox item document definition', function() {
       doc,
       expectedDocType,
       [
+        errorFormatter.maximumLengthViolation('annotations[metadata][0].modifications', 1),
         errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
         errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]),
         errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
@@ -217,6 +218,73 @@ describe('business-sync shoebox item document definition', function() {
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
+      },
+      annotations: {
+        metadata: [
+          {
+            type: 'embedded',
+            dataType: 'metadata',
+            data: {
+              'some-metadata-field': 'actually, no, something totally different',
+              'another-field': 'more data, but different'
+            },
+            modifications: [
+              {
+                timestamp: '2017-02-19T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          },
+          {
+            type: 'embedded',
+            dataType: 'metadata',
+            data: {
+              'some-metadata-field': 'some random user provided metadata - thats changed!',
+              'another-field': 'more data'
+            },
+            modifications: [
+              {
+                timestamp: '2016-02-18T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1944485'
+                }
+              }
+            ]
+          }
+        ],
+      },
+      previousData: [
+        {
+          received: '2016-06-18T18:57:35.328-08:00',
+          data: {
+            foo: 'baz'
+          }
+        }
+      ],
+      annotations: {
+        metadata: [
+          {
+            type: 'embedded',
+            dataType: 'metadata',
+            data: {
+              'some-metadata-field': 'some random user provided metadata',
+              'another-field': 'more data'
+            },
+            modifications: [
+              {
+                timestamp: '2017-02-18T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          }
+        ],
       },
       unknownProp: 'some-value'
     };
