@@ -2,10 +2,10 @@
   "name": "kashoo-document-definitions",
   "version": "1.0.0",
   "dependencies": {
-    "synctos": "^2.5.0"
+    "synctos": "^2.6.0"
   },
   "devDependencies": {
-    "jshint": "^2.9.5",
+    "jshint": "^2.9.6",
     "mocha": "^5.2.0"
   },
   "scripts": {
