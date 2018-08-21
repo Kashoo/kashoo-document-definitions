@@ -48,15 +48,15 @@ function() {
       },
       capturedAt: {
         // The date that the settlement was completed (captured)
-        type: 'string',
-        customValidation: customDatetimeValidation,
+        type: 'datetime',
+        skipValidationWhenValueUnchangedStrict: true,
         required: true,
         immutable: true
       },
       processedAt: {
         // The date/time at which the settlement was processed/imported to Kashoo
-        type: 'string',
-        customValidation: customDatetimeValidation,
+        type: 'datetime',
+        skipValidationWhenValueUnchangedStrict: true,
         required: true,
         immutable: true
       },

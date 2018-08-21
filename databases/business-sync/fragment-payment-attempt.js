@@ -39,8 +39,8 @@
     },
     date: {
       // When the payment was attempted
-      type: 'string',
-      customValidation: customDatetimeValidation,
+      type: 'datetime',
+      skipValidationWhenValueUnchangedStrict: true,
       required: true
     },
     internalPaymentRecordId: {

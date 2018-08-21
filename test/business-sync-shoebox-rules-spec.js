@@ -100,15 +100,14 @@ describe('business-sync shoebox import rules document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.typeConstraintViolation('rules[ABC].criteria[1].value', 'array'),
-        errorFormatter.typeConstraintViolation('rules[ABC].suggestions[0].suggestedValue', 'array'),
+        errorFormatter.validationConditionsViolation('rules[ABC].criteria[1].value'),
+        errorFormatter.validationConditionsViolation('rules[ABC].suggestions[0].suggestedValue'),
         errorFormatter.typeConstraintViolation('rules[ABC].suggestions[1].suggestedValue[0]', 'integer'),
         errorFormatter.minimumValueExclusiveViolation('rules[ABC].suggestions[1].suggestedValue[1]', 0),
         errorFormatter.mustNotBeEmptyViolation('rules[ABC].suggestions[2].suggestedValue'),
         errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[2].value[0]'),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains', 'containsAll' ]),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].field', [ 'description' ]),
-        errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[1].value'),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].suggestions[0].suggestedField', [ 'accountNumber', 'taxIds' ]),
         errorFormatter.hashtableKeyEmpty("rules"),
         errorFormatter.mustNotBeEmptyViolation('rules[].criteria'),
@@ -214,10 +213,9 @@ describe('business-sync shoebox import rules document definition', function() {
       oldDoc,
       expectedDocType,
       [
-        errorFormatter.typeConstraintViolation('rules[ABC].criteria[1].value', 'array'),
+        errorFormatter.validationConditionsViolation('rules[ABC].criteria[1].value'),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains', 'containsAll' ]),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].field', [ 'description' ]),
-        errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[1].value'),
         errorFormatter.requiredValueViolation('rules[ABC].suggestions'),
         errorFormatter.requiredValueViolation('rules[ABC].removed')
       ]);

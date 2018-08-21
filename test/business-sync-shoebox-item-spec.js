@@ -179,7 +179,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
         errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
-        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'string'),
+        errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[1].timestamp', 'datetime'),
         errorFormatter.requiredValueViolation('annotations[metadata][0].modifications[1].source'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[1].timestamp'),
         errorFormatter.datetimeFormatInvalid('processed.timestamp'),
