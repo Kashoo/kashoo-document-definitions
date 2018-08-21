@@ -29,8 +29,8 @@
     },
     received: {
       // The time at which the data was received by the shoebox
-      type: 'string',
-      customValidation: customDatetimeValidation,
+      type: 'datetime',
+      skipValidationWhenValueUnchangedStrict: true,
       required: true
     },
     data: {
@@ -51,8 +51,8 @@
         propertyValidators: {
           received: {
             // Time at which the data was received
-            type: 'string',
-            customValidation: customDatetimeValidation,
+            type: 'datetime',
+            skipValidationWhenValueUnchangedStrict: true,
             required: true
           },
           data: {
@@ -129,8 +129,8 @@
                     }
                   },
                   timestamp: {
-                    type: 'string',
-                    customValidation: customDatetimeValidation,
+                    type: 'datetime',
+                    skipValidationWhenValueUnchangedStrict: true,
                     required: true
                   }
                 }
@@ -163,8 +163,8 @@
           }
         },
         timestamp: {
-          type: 'string',
-          customValidation: customDatetimeValidation,
+          type: 'datetime',
+          skipValidationWhenValueUnchangedStrict: true,
           required: true
         }
       }

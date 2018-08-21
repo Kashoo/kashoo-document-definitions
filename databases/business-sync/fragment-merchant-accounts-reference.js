@@ -41,15 +41,15 @@
           },
           // The date/time that the account was confirmed/activated
           registrationConfirmed: {
-            type: 'string',
-            customValidation: customDatetimeValidation
+            type: 'datetime',
+            skipValidationWhenValueUnchangedStrict: true
           },
           // A list of the date/times that account registration confirmation requests were initiated
           registrationConfirmationRequisitions: {
             type: 'array',
             arrayElementsValidator: {
-              type: 'string',
-              customValidation: customDatetimeValidation,
+              type: 'datetime',
+              skipValidationWhenValueUnchangedStrict: true,
               required: true
             }
           }

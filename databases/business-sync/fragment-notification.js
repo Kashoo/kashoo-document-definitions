@@ -44,15 +44,15 @@
     },
     createdAt: {
       // When the notification was first created
-      type: 'string',
-      customValidation: customDatetimeValidation,
+      type: 'datetime',
+      skipValidationWhenValueUnchangedStrict: true,
       required: true,
       immutable: true
     },
     firstReadAt: {
       // When the notification was first read
-      type: 'string',
-      customValidation: customDatetimeValidation,
+      type: 'datetime',
+      skipValidationWhenValueUnchangedStrict: true,
       immutableWhenSet: true
     },
     siteName: {

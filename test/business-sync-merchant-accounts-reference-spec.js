@@ -23,7 +23,7 @@ describe('business-sync merchant accounts reference document definition', functi
           merchantAccountId: 'my-merchant-account1',
           authorization: 'my-access-token1',
           paymentProcessorDefinitionId: 'my-payment-processor1',
-          registrationConfirmed: '2017-02-17T18:44:35.128-0800'
+          registrationConfirmed: '2017-02-17T18:44:35.128-08:00'
         },
         account2: {
           provider: 'bar',
@@ -31,7 +31,7 @@ describe('business-sync merchant accounts reference document definition', functi
           authorization: 'my-access-token2',
           paymentProcessorDefinitionId: 'my-payment-processor2',
           registrationConfirmationRequisitions: [
-            '2017-02-16T07:15:32.767-0800'
+            '2017-02-16T07:15:32.767-08:00'
           ]
         }
       }
@@ -79,7 +79,18 @@ describe('business-sync merchant accounts reference document definition', functi
   });
 
   it('successfully replaces a valid merchant accounts reference document', function() {
-    var doc = { _id: 'biz.88.merchantAccounts' };
+    var doc = {
+      _id: 'biz.88.merchantAccounts',
+      accounts: {
+        account88: {
+          provider: 'stripe',
+          merchantAccountId: 'my-merchant-account33',
+          authorization: 'my-access-token33',
+          paymentProcessorDefinitionId: 'my-payment-processor3',
+          registrationConfirmed: '2017-02-17T20:34-0700' // Not a valid datetime format but it matches the old value
+        }
+      }
+    };
     var oldDoc = {
       _id: 'biz.88.merchantAccounts',
       accounts: {
@@ -88,7 +99,7 @@ describe('business-sync merchant accounts reference document definition', functi
           merchantAccountId: 'my-merchant-account88',
           authorization: 'my-access-token88',
           paymentProcessorDefinitionId: 'my-payment-processor2',
-          registrationConfirmed: '2017-02-17',
+          registrationConfirmed: '2017-02-17T20:34-0700',
           registrationConfirmationRequisitions: [ '2017-02-16', '2017-02-17' ]
         }
       }
@@ -121,7 +132,7 @@ describe('business-sync merchant accounts reference document definition', functi
         errorFormatter.typeConstraintViolation('accounts[account1].provider', 'string'),
         errorFormatter.typeConstraintViolation('accounts[account1].merchantAccountId', 'string'),
         errorFormatter.typeConstraintViolation('accounts[account1].authorization', 'string'),
-        errorFormatter.typeConstraintViolation('accounts[account1].registrationConfirmed', 'string'),
+        errorFormatter.typeConstraintViolation('accounts[account1].registrationConfirmed', 'datetime'),
         errorFormatter.datetimeFormatInvalid('accounts[account1].registrationConfirmed'),
         errorFormatter.mustNotBeEmptyViolation('accounts[account1].paymentProcessorDefinitionId'),
         errorFormatter.requiredValueViolation('accounts[account2].authorization'),
