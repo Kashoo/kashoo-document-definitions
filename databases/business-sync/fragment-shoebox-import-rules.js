@@ -25,34 +25,52 @@
             arrayElementsValidator: {
               type: 'object',
               required: true,
-              propertyValidators: function(doc, oldDoc, value, oldValue) {
-                // the value to use in the comparison.  Type is dependent on the comparison operator
-                var valueValidator = {
-                  type: value.comparison === 'contains' ? 'string' : 'array',
-                  mustNotBeEmpty: true,
+              propertyValidators: {
+                comparison: {
+                  // Comparison operation.  This will be specific to the field (ie, comparison on the amount field will be numerical)
+                  type: 'enum',
+                  predefinedValues: [ 'contains', 'containsAll' ],
                   required: true
-                };
-                if (value.comparison === 'containsAll') {
-                  valueValidator.arrayElementsValidator = {
-                    type: 'string',
-                    mustNotBeEmpty: true
-                  };
+                },
+                field: {
+                  // The field to inspect for comparison
+                  type: 'enum',
+                  predefinedValues: [ 'description' ],
+                  required: true
+                },
+                value: {
+                  // the value to use in the comparison.  Type is dependent on the comparison operator
+                  type: 'conditional',
+                  required: true,
+                  validationCandidates: [
+                    {
+                      condition: function(doc, oldDoc, currentItemEntry, validationItemStack) {
+                        var parentObj = validationItemStack[validationItemStack.length - 1].itemValue;
+
+                        return parentObj.comparison === 'contains';
+                      },
+                      validator: {
+                        type: 'string',
+                        mustNotBeEmpty: true
+                      }
+                    },
+                    {
+                      condition: function(doc, oldDoc, currentItemEntry, validationItemStack) {
+                        var parentObj = validationItemStack[validationItemStack.length - 1].itemValue;
+
+                        return parentObj.comparison === 'containsAll';
+                      },
+                      validator: {
+                        type: 'array',
+                        mustNotBeEmpty: true,
+                        arrayElementsValidator: {
+                          type: 'string',
+                          mustNotBeEmpty: true
+                        }
+                      }
+                    }
+                  ]
                 }
-                return {
-                  comparison: {
-                    // Comparison operation.  This will be specific to the field (ie, comparison on the amount field will be numerical)
-                    type: 'enum',
-                    predefinedValues: [ 'contains', 'containsAll' ],
-                    required: true
-                  },
-                  field: {
-                    // The field to inspect for comparison
-                    type: 'enum',
-                    predefinedValues: [ 'description' ],
-                    required: true
-                  },
-                  value: valueValidator
-                };
               }
             }
           },
@@ -64,29 +82,46 @@
               type: 'object',
               required: true,
               allowUnknownProperties: true,
-              propertyValidators: function(doc, oldDoc, value, oldValue) {
-                var suggestedValueValidator = {
-                  type: value.suggestedField === 'accountNumber' ? 'string' : 'array',
+              propertyValidators: {
+                // Name of the field the suggestion is intended for.  Field name should imply expected type.
+                suggestedField: {
+                  type: 'enum',
+                  predefinedValues: [ 'accountNumber', 'taxIds' ],
+                  required: true
+                },
+                // Value of the suggestion
+                suggestedValue: {
+                  type: 'conditional',
                   required: true,
-                  mustNotBeEmpty: true
-                };
-                if (value.suggestedField === 'taxIds') {
-                  suggestedValueValidator.arrayElementsValidator = {
-                    type: 'integer',
-                    mustNotBeEmpty: true,
-                    minimumValueExclusive: 0
-                  };
+                  validationCandidates: [
+                    {
+                      condition: function(doc, oldDoc, currentItemEntry, validationItemStack) {
+                        var parentObj = validationItemStack[validationItemStack.length - 1].itemValue;
+
+                        return parentObj.suggestedField === 'accountNumber';
+                      },
+                      validator: {
+                        type: 'string',
+                        mustNotBeEmpty: true
+                      }
+                    },
+                    {
+                      condition: function(doc, oldDoc, currentItemEntry, validationItemStack) {
+                        var parentObj = validationItemStack[validationItemStack.length - 1].itemValue;
+
+                        return parentObj.suggestedField === 'taxIds';
+                      },
+                      validator: {
+                        type: 'array',
+                        mustNotBeEmpty: true,
+                        arrayElementsValidator: {
+                          type: 'integer',
+                          minimumValueExclusive: 0
+                        }
+                      }
+                    }
+                  ]
                 }
-                return {
-                  // Name of the field the suggestion is intended for.  Field name should imply expected type.
-                  suggestedField: {
-                    type: 'enum',
-                    predefinedValues: [ 'accountNumber', 'taxIds' ],
-                    required: true
-                  },
-                  // Value of the suggestion
-                  suggestedValue: suggestedValueValidator
-                };
               }
             }
           },
