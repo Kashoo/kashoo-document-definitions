@@ -69,7 +69,7 @@
       type: 'hashtable',
       hashtableKeysValidator: {
         mustNotBeEmpty: false,
-          regexPattern: new RegExp('^metadata$|^record$|^partial-record$|^classification$|^classification-suggestion$')
+          regexPattern: new RegExp('^association$|^metadata$|^record$|^partial-record$|^classification$|^classification-suggestion$')
       },
       hashtableValuesValidator: {
         type: 'array',
@@ -93,7 +93,7 @@
               type: 'enum',
               immutable: true,
               required: true,
-              predefinedValues: [ 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]
+              predefinedValues: [ 'association', 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]
             },
             // payload, pretty much unrestricted at this point
             data: {

@@ -174,7 +174,7 @@ describe('business-sync shoebox item document definition', function() {
       [
         errorFormatter.maximumLengthViolation('annotations[metadata][0].modifications', 1),
         errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
-        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'association', 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]),
         errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
         errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
