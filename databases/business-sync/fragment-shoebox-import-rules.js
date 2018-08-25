@@ -112,8 +112,7 @@
                         return parentObj.suggestedField === 'accountTaxNumber';
                       },
                       validator: {
-                        type: 'integer',
-                        mustNotBeEmpty: true
+                        type: 'integer'
                       }
                     },
                     {

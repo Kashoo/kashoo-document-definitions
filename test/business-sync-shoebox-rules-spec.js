@@ -112,7 +112,7 @@ describe('business-sync shoebox import rules document definition', function() {
         errorFormatter.mustNotBeEmptyViolation('rules[ABC].criteria[2].value[0]'),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].comparison', [ 'contains', 'containsAll' ]),
         errorFormatter.enumPredefinedValueViolation('rules[ABC].criteria[1].field', [ 'description' ]),
-        errorFormatter.enumPredefinedValueViolation('rules[ABC].suggestions[0].suggestedField', [ 'accountNumber', 'taxIds' ]),
+        errorFormatter.enumPredefinedValueViolation('rules[ABC].suggestions[0].suggestedField', [ 'accountNumber', 'accountTaxNumber', 'taxIds' ]),
         errorFormatter.hashtableKeyEmpty("rules"),
         errorFormatter.mustNotBeEmptyViolation('rules[].criteria'),
         errorFormatter.mustNotBeEmptyViolation('rules[].suggestions'),
