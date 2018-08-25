@@ -37,6 +37,10 @@ describe('business-sync shoebox import rules document definition', function() {
               suggestedValue: '2345'
             },
             {
+              suggestedField: 'accountTaxNumber',
+              suggestedValue: 12345,
+            },
+            {
               suggestedField: 'taxIds',
               suggestedValue: [333, 555]
             }
