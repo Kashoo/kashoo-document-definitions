@@ -86,7 +86,7 @@
                 // Name of the field the suggestion is intended for.  Field name should imply expected type.
                 suggestedField: {
                   type: 'enum',
-                  predefinedValues: [ 'accountNumber', 'taxIds' ],
+                  predefinedValues: [ 'accountNumber', 'accountTaxNumber', 'taxIds' ],
                   required: true
                 },
                 // Value of the suggestion
@@ -103,6 +103,16 @@
                       validator: {
                         type: 'string',
                         mustNotBeEmpty: true
+                      }
+                    },
+                    {
+                      condition: function(doc, oldDoc, currentItemEntry, validationItemStack) {
+                        var parentObj = validationItemStack[validationItemStack.length - 1].itemValue;
+
+                        return parentObj.suggestedField === 'accountTaxNumber';
+                      },
+                      validator: {
+                        type: 'integer'
                       }
                     },
                     {
