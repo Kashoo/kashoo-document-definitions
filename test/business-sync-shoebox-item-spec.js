@@ -357,7 +357,7 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentNotReplaced(expectedBasePrivilege, 3, doc, oldDoc, expectedDocType, [ errorFormatter.immutableItemViolation('type'), errorFormatter.immutableItemViolation('source'), errorFormatter.immutableItemViolation('sourceId') ]);
   });
 
-  it('cannot delete a shoebox item document', function() {
+  it('can delete a shoebox item document', function() {
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
@@ -369,6 +369,6 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    businessSyncSpecHelper.verifyDocumentNotDeleted(expectedBasePrivilege, 3, oldDoc, expectedDocType, [ errorFormatter.cannotDeleteDocViolation() ]);
+    businessSyncSpecHelper.verifyDocumentDeleted(expectedBasePrivilege, 3, oldDoc );
   });
 });
