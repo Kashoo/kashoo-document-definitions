@@ -174,7 +174,7 @@ describe('business-sync shoebox item document definition', function() {
       [
         errorFormatter.maximumLengthViolation('annotations[metadata][0].modifications', 1),
         errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].type', [ 'embedded' ]),
-        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'association', 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion' ]),
+        errorFormatter.enumPredefinedValueViolation('annotations[metadata][0].dataType', [ 'association', 'metadata', 'record', 'partial-record', 'classification', 'classification-suggestion', 'match-suggestion' ]),
         errorFormatter.requiredValueViolation('annotations[metadata][0].data'),
         errorFormatter.typeConstraintViolation('annotations[metadata][0].modifications[0].source', 'object'),
         errorFormatter.datetimeFormatInvalid('annotations[metadata][0].modifications[0].timestamp'),
@@ -256,6 +256,24 @@ describe('business-sync shoebox item document definition', function() {
             ]
           }
         ],
+        'match-suggestion': [
+          {
+            type: 'embedded',
+            dataType: 'match-suggestion',
+            data: {
+              'suggestions': ['doc1', 'doc2']
+            },
+            modifications: [
+              {
+                timestamp: '2017-02-19T18:57:35.328-08:00',
+                source: {
+                  type: 'books-user',
+                  id: '1998485'
+                }
+              }
+            ]
+          }
+        ]
       },
       previousData: [
         {
