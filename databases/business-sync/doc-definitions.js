@@ -109,5 +109,8 @@ function() {
 
     // For storing Square data entities and any associations
     squareData: importDocumentDefinitionFragment('fragment-square-data.js'),
+
+    // For storing Wepay auth token
+    wepayAuthToken: importDocumentDefinitionFragment('fragment-wepay-auth-token.js'),
   };
 }
