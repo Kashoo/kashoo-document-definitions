@@ -20,6 +20,7 @@ describe('business-sync shoebox item document definition', function() {
       type: 'bank',
       source: 'yodlee',
       sourceId: '1239004',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -44,12 +45,28 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
+  it('successfully creates a shoebox item document with an empty state', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      sourceId: '1239004',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
+  });
+
   it('successfully creates a shoebox item document with a missing previous data field and a collection of valid annotations', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
       sourceId: '1239004',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -113,6 +130,7 @@ describe('business-sync shoebox item document definition', function() {
       type: 4,
       source: '',
       sourceId: 982784,
+      state: 'invalid',
       received: 'some non-date',
       data: 2.4,
       annotations: 'a string annotation field',
@@ -128,6 +146,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry' ]),
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
+        errorFormatter.enumPredefinedValueViolation('state', [ 'ready', 'processed', 'before-opening' ]),
         errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'object'),
         errorFormatter.typeConstraintViolation('annotations', 'hashtable'),
@@ -141,6 +160,7 @@ describe('business-sync shoebox item document definition', function() {
       type: 'email',
       source: 'email-server',
       sourceId: '1239004',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -194,6 +214,7 @@ describe('business-sync shoebox item document definition', function() {
       type: 'foo',
       source: 'yodlee',
       sourceId: '1239004',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -215,6 +236,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -310,6 +332,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'baz'
@@ -324,6 +347,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -340,6 +364,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'baz'
@@ -349,12 +374,39 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
   });
 
+  it('can change shoebox item document state', function() {
+    var doc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      state: 'before-opening',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'bar'
+      }
+    };
+    var oldDoc = {
+      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+      type: 'bank',
+      source: 'yodlee',
+      state: 'ready',
+      received: '2016-06-18T18:57:35.328-08:00',
+      data: {
+        foo: 'baz'
+      }
+    };
+
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, 3, doc, oldDoc);
+  });
+
+
   it('cannot modify the document type, source, or sourceId', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
       sourceId: 'yodlee-id',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -366,6 +418,7 @@ describe('business-sync shoebox item document definition', function() {
       type: 'document',
       source: 'yodlee-different',
       sourceId: 'yodlee-id-different',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -380,6 +433,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'document',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -395,6 +449,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'

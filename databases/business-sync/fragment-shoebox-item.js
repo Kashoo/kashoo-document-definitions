@@ -30,6 +30,15 @@
       immutable: true,
       mustNotBeEmpty: true
     },
+    state: {
+      // The shoebox item's state within the shoebox processing pipeline. This state can be null for old items but will
+      // always be set for new items.
+      //   ready: the item is ready to be processed by the user in the inbox
+      //   processed: the item has been processed and added to books
+      //   before-opening: the item now falls before its account's opening date and shouldn't be processed
+      type: 'enum',
+      predefinedValues: [ 'ready', 'processed', 'before-opening' ]
+    },
     received: {
       // The time at which the data was received by the shoebox
       type: 'datetime',
