@@ -101,6 +101,9 @@ function() {
     // References the payment requisitions and payment attempts that were created for an invoice
     paymentRequisitionsReference: importDocumentDefinitionFragment('fragment-payment-requisitions-reference.js'),
 
+    // Holds blacklisted carriers to restrict during phone # verification
+    phoneVerificationCarrierBlacklist: importDocumentDefinitionFragment('fragment-phone-verification-carrier-blacklist.js'),
+
     // Generic document for storing outside sourced data
     shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js'),
 
