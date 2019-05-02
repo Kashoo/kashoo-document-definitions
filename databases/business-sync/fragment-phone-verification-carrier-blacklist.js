@@ -1,6 +1,6 @@
 {
   channels: function(doc, oldDoc) {
-    // Only staff/service users can create, replace or delete payment attempts to prevent regular users from tampering
+    // Only staff/service users can create, replace or delete blacklist documents to prevent regular users from tampering
     return {
       view: staffChannel,
       write: staffChannel
@@ -11,7 +11,6 @@
   },
   propertyValidators: {
     blacklist: {
-      // The ID of the business with which the payment attempt is associated
       type: 'array',
       required: true,
       minimumLength: 1,

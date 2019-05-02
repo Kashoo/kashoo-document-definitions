@@ -3,7 +3,7 @@ var synctos = require('synctos');
 var testFixtureMaker = synctos.testFixtureMaker;
 var errorFormatter = synctos.validationErrorFormatter;
 
-describe('business-sync ohone verification carrier blacklist', function() {
+describe('business-sync phone verification carrier blacklist', function() {
   var testFixture = testFixtureMaker.initFromSyncFunction('build/sync-functions/business-sync/sync-function.js');
   var businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
 
