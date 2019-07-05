@@ -6,8 +6,8 @@
   },
   allowUnknownProperties: true,
   cannotDelete: function(doc, oldDoc) {
-    // only document types can be deleted at the moment (because they are manually uploaded)
-    return oldDoc.type !== 'document';
+    // Allowed to delete document items and bank import items, nothing else.
+    return !(oldDoc.type === 'document' || (oldDoc.type === 'bank' && oldDoc.source === 'import'));
   },
   propertyValidators: {
     type: {
