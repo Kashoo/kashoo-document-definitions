@@ -444,6 +444,22 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentDeleted(expectedBasePrivilege, 3, oldDoc );
   });
 
+  it('can delete a bank import shoebox item document', function() {
+      var oldDoc = {
+        _id: 'biz.3.shoeboxItem.bank-record.XYZ',
+        type: 'bank',
+        source: 'import',
+        state: 'ready',
+        received: '2016-06-18T18:57:35.328-08:00',
+        data: {
+          foo: 'bar'
+        },
+        unknownProp: 'some-value'
+      };
+
+      businessSyncSpecHelper.verifyDocumentDeleted(expectedBasePrivilege, 3, oldDoc );
+    });
+
   it('cannot delete a bank type shoebox item document', function() {
     var oldDoc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
