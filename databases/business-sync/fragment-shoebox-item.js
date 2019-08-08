@@ -1,5 +1,16 @@
 {
-  channels: getDocSyncChannels(doc, oldDoc, 'SHOEBOX_ITEMS'),
+  channels: function(doc, oldDoc) {
+    var syncChannels = getDocSyncChannels(doc, oldDoc, 'SHOEBOX_ITEMS')(doc, oldDoc);
+    // assign to special channel if doc is new
+    if (!oldDoc && !doc._deleted) {
+      var viewChannels = syncChannels.add || [];
+      viewChannels = Array.isArray(viewChannels) ? viewChannels : [viewChannels];
+      viewChannels.push('NEW_SHOEBOX_DOCS');
+      syncChannels.add = viewChannels;
+      return syncChannels;
+    }
+    return syncChannels;
+  },
   typeFilter: function(doc, oldDoc) {
     // Keyspace schema:  biz.<biz_id>.shoeboxItem.<item_type>.<uuid>
     return createBusinessEntityRegex('shoeboxItem\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+').test(doc._id);

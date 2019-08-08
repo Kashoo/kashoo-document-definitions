@@ -42,7 +42,7 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
+    verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
   it('successfully creates a shoebox item document with an empty state', function() {
@@ -57,7 +57,7 @@ describe('business-sync shoebox item document definition', function() {
       }
     };
 
-    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
+    verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
   it('successfully creates a shoebox item document with a missing previous data field and a collection of valid annotations', function() {
@@ -121,7 +121,7 @@ describe('business-sync shoebox item document definition', function() {
       unknownProp: 'some-value'
     };
 
-    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
+    verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
   it('cannot create a shoebox item document when the properties are invalid', function() {
@@ -137,7 +137,7 @@ describe('business-sync shoebox item document definition', function() {
       processed: 1233
     };
 
-    businessSyncSpecHelper.verifyDocumentNotCreated(
+    verifyDocumentNotCreated(
       expectedBasePrivilege,
       1,
       doc,
@@ -186,7 +186,7 @@ describe('business-sync shoebox item document definition', function() {
       }
     };
 
-    businessSyncSpecHelper.verifyDocumentNotCreated(
+    verifyDocumentNotCreated(
       expectedBasePrivilege,
       3,
       doc,
@@ -221,7 +221,7 @@ describe('business-sync shoebox item document definition', function() {
       }
     };
 
-    businessSyncSpecHelper.verifyDocumentNotCreated(
+    verifyDocumentNotCreated(
       expectedBasePrivilege,
       3,
       doc,
@@ -475,4 +475,18 @@ describe('business-sync shoebox item document definition', function() {
 
     businessSyncSpecHelper.verifyDocumentNotDeleted(expectedBasePrivilege, 3, oldDoc, expectedDocType, [ errorFormatter.cannotDeleteDocViolation() ]);
   });
+
+  function verifyDocumentCreated(basePrivilegeName, bizId, doc) {
+    var privileges = [ 'STAFF', bizId + '-ADD_' + basePrivilegeName, 'NEW_SHOEBOX_DOCS' ];
+    testFixture.verifyDocumentCreated(doc, { expectedChannels: privileges });
+  }
+
+  function verifyDocumentNotCreated(basePrivilegeName, bizId, doc, expectedDocType, expectedErrorMessages) {
+    var privileges = [ 'STAFF', bizId + '-ADD_' + basePrivilegeName, 'NEW_SHOEBOX_DOCS' ];
+    testFixture.verifyDocumentNotCreated(
+      doc,
+      expectedDocType,
+      expectedErrorMessages,
+      privileges);
+  }
 });
