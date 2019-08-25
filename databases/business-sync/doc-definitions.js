@@ -104,6 +104,9 @@ function() {
     // Holds blacklisted carriers to restrict during phone # verification
     phoneVerificationCarrierBlacklist: importDocumentDefinitionFragment('fragment-phone-verification-carrier-blacklist.js'),
 
+    // Document for storing custom report definitions
+    reports: importDocumentDefinitionFragment('fragment-custom-reports.js'),
+
     // Generic document for storing outside sourced data
     shoeboxItem: importDocumentDefinitionFragment('fragment-shoebox-item.js'),
 
