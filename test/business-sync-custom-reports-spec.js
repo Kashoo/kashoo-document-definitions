@@ -115,7 +115,7 @@ describe('business-sync custom reports document definition', function() {
         [
           errorFormatter.mustNotBeEmptyViolation('reports[0].id'),
           errorFormatter.typeConstraintViolation('reports[0].name', 'string'),
-          errorFormatter.enumPredefinedValueViolation('reports[0].type', [ 'balance-sheet', 'cash-flow', 'income-statement', 'insights', 'sales-tax' ]),
+          errorFormatter.enumPredefinedValueViolation('reports[0].type', [ 'balance-sheet', 'cash-flow', 'insights', 'profit-and-loss', 'sales-tax' ]),
           errorFormatter.typeConstraintViolation('reports[0].config', 'object')
         ],
         expectedPrivileges);
