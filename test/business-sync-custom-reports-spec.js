@@ -11,10 +11,9 @@ describe('business-sync custom reports document definition', function() {
     businessSyncSpecHelper = businessSyncSpecHelperMaker.init(testFixture);
   });
 
-  var staffChannel = 'STAFF';
-  var expectedPrivilege = '4444-CHANGE_BUSINESS';
-  var expectedPrivileges = [ staffChannel, expectedPrivilege ];
+  var expectedBasePrivilege = 'REPORTS';
   var expectedDocType = 'reports';
+  var businessId = 4444;
 
   function nullConstraint (name) {
     return 'item "' + name + '" must not be null or missing'
@@ -35,7 +34,7 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentCreated(doc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, businessId, doc);
   });
 
   it('can create an empty reports document', function() {
@@ -44,7 +43,7 @@ describe('business-sync custom reports document definition', function() {
       reports: []
     };
 
-    testFixture.verifyDocumentCreated(doc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, businessId, doc);
   });
 
   it('cannot create a reports document with missing reports item', function () {
@@ -52,13 +51,14 @@ describe('business-sync custom reports document definition', function() {
       _id: 'biz.4444.reports'
     };
 
-    testFixture.verifyDocumentNotCreated(
-        doc,
-        expectedDocType,
-        [
-          nullConstraint('reports')
-        ],
-        expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      businessId,
+      doc,
+      expectedDocType,
+      [
+        nullConstraint('reports')
+      ]);
   });
 
   it('cannot create a reports document with an invalid reports list', function () {
@@ -67,13 +67,14 @@ describe('business-sync custom reports document definition', function() {
       reports: 'foo'
     };
 
-    testFixture.verifyDocumentNotCreated(
-        doc,
-        expectedDocType,
-        [
-          errorFormatter.typeConstraintViolation('reports', 'array'),
-        ],
-        expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      businessId,
+      doc,
+      expectedDocType,
+      [
+        errorFormatter.typeConstraintViolation('reports', 'array'),
+      ]);
   });
 
   it('cannot create a reports document with empty report objects', function () {
@@ -84,16 +85,17 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentNotCreated(
-        doc,
-        expectedDocType,
-        [
-          nullConstraint('reports[0].id'),
-          nullConstraint('reports[0].name'),
-          nullConstraint('reports[0].type'),
-          nullConstraint('reports[0].config')
-        ],
-        expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      businessId,
+      doc,
+      expectedDocType,
+      [
+        nullConstraint('reports[0].id'),
+        nullConstraint('reports[0].name'),
+        nullConstraint('reports[0].type'),
+        nullConstraint('reports[0].config')
+      ]);
   });
 
   it('cannot create a reports document with an invalid report objects', function () {
@@ -109,16 +111,17 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentNotCreated(
-        doc,
-        expectedDocType,
-        [
-          errorFormatter.mustNotBeEmptyViolation('reports[0].id'),
-          errorFormatter.typeConstraintViolation('reports[0].name', 'string'),
-          errorFormatter.enumPredefinedValueViolation('reports[0].type', [ 'balance-sheet', 'cash-flow', 'insights', 'profit-and-loss', 'sales-tax' ]),
-          errorFormatter.typeConstraintViolation('reports[0].config', 'object')
-        ],
-        expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentNotCreated(
+      expectedBasePrivilege,
+      businessId,
+      doc,
+      expectedDocType,
+      [
+        errorFormatter.mustNotBeEmptyViolation('reports[0].id'),
+        errorFormatter.typeConstraintViolation('reports[0].name', 'string'),
+        errorFormatter.enumPredefinedValueViolation('reports[0].type', [ 'balance-sheet', 'cash-flow', 'insights', 'profit-and-loss', 'sales-tax' ]),
+        errorFormatter.typeConstraintViolation('reports[0].config', 'object')
+      ]);
   });
 
   it('can modify a reports document to add a new report', function () {
@@ -141,7 +144,7 @@ describe('business-sync custom reports document definition', function() {
       reports: []
     };
 
-    testFixture.verifyDocumentReplaced(doc, oldDoc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, businessId, doc, oldDoc);
   });
 
   it('can modify a reports document to update a report', function () {
@@ -173,7 +176,7 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentReplaced(doc, oldDoc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, businessId, doc, oldDoc);
   });
 
   it('can modify a reports document to remove a report', function () {
@@ -196,7 +199,7 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentReplaced(doc, oldDoc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, businessId, doc, oldDoc);
   });
 
   it('can modify a reports document to replace a report', function () {
@@ -228,7 +231,7 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentReplaced(doc, oldDoc, expectedPrivileges);
+    businessSyncSpecHelper.verifyDocumentReplaced(expectedBasePrivilege, businessId, doc, oldDoc);
   });
 
   it('cannot modify a reports document with an invalid reports doc', function () {
@@ -257,14 +260,15 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentNotReplaced(
+    businessSyncSpecHelper.verifyDocumentNotReplaced(
+      expectedBasePrivilege,
+      businessId,
       doc,
       oldDoc,
       expectedDocType,
       [
         nullConstraint('reports[0].config')
-      ],
-      expectedPrivileges);
+      ]);
   });
 
   it('cannot delete a reports document', function() {
@@ -282,10 +286,13 @@ describe('business-sync custom reports document definition', function() {
       ]
     };
 
-    testFixture.verifyDocumentNotDeleted(
+    businessSyncSpecHelper.verifyDocumentNotDeleted(
+      expectedBasePrivilege,
+      businessId,
       doc,
       expectedDocType,
-      [ errorFormatter.cannotDeleteDocViolation() ],
-      expectedPrivileges);
+      [
+        errorFormatter.cannotDeleteDocViolation()
+      ]);
   });
 });

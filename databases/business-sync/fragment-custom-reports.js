@@ -1,13 +1,5 @@
 {
-  channels: function(doc, oldDoc) {
-    var businessId = getBusinessId(doc, oldDoc);
-    return {
-      view: [ toSyncChannel(businessId, 'VIEW'), staffChannel ],
-      add: [ toSyncChannel(businessId, 'CHANGE_BUSINESS'), staffChannel ],
-      replace: [ toSyncChannel(businessId, 'CHANGE_BUSINESS'), staffChannel ],
-      remove: [ toSyncChannel(businessId, 'CHANGE_BUSINESS'), staffChannel ]
-    };
-  },
+  channels: getDocSyncChannels(doc, oldDoc, 'REPORTS'),
   typeFilter: function(doc, oldDoc) {
     // Keyspace schema:  biz.<biz_id>.reports
     return createBusinessEntityRegex('reports').test(doc._id);
