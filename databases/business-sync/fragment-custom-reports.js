@@ -9,7 +9,7 @@
     };
   },
   typeFilter: function(doc, oldDoc) {
-    // Keyspace schema:  biz.<biz_id>.shoebox.importRules
+    // Keyspace schema:  biz.<biz_id>.reports
     return createBusinessEntityRegex('reports').test(doc._id);
   },
   allowUnknownProperties: false,
