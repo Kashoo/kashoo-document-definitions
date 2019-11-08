@@ -4,6 +4,7 @@ function() {
 
   return {
     announcements: importDocumentDefinitionFragment('fragment-announcements.js'),
+    avalaraCanadianTaxes: importDocumentDefinitionFragment('fragment-avalara-canadian-taxes.js'),
     featureReleaseToggleDefinitions: importDocumentDefinitionFragment('fragment-feature-release-toggle-definitions.js'),
     featureReleaseToggles: importDocumentDefinitionFragment('fragment-feature-release-toggles.js'),
     paymentNotificationTemplates: importDocumentDefinitionFragment('fragment-payment-notification-templates.js'),
