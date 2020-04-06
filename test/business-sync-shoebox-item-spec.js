@@ -45,21 +45,6 @@ describe('business-sync shoebox item document definition', function() {
     businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
   });
 
-  it('successfully creates a shoebox item document with an empty state', function() {
-    var doc = {
-      _id: 'biz.3.shoeboxItem.bank-record.XYZ',
-      type: 'bank',
-      source: 'yodlee',
-      sourceId: '1239004',
-      received: '2016-06-18T18:57:35.328-08:00',
-      data: {
-        foo: 'bar'
-      }
-    };
-
-    businessSyncSpecHelper.verifyDocumentCreated(expectedBasePrivilege, 3, doc);
-  });
-
   it('successfully creates a shoebox item document with a missing previous data field and a collection of valid annotations', function() {
     var doc = {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
@@ -146,7 +131,7 @@ describe('business-sync shoebox item document definition', function() {
         errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry' ]),
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
-        errorFormatter.enumPredefinedValueViolation('state', [ 'ready', 'processed', 'before-opening' ]),
+        errorFormatter.enumPredefinedValueViolation('state', [ 'ready', 'processed' ]),
         errorFormatter.datetimeFormatInvalid('received'),
         errorFormatter.typeConstraintViolation('data', 'object'),
         errorFormatter.typeConstraintViolation('annotations', 'hashtable'),
@@ -379,7 +364,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
-      state: 'before-opening',
+      state: 'ready',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'bar'
@@ -389,7 +374,7 @@ describe('business-sync shoebox item document definition', function() {
       _id: 'biz.3.shoeboxItem.bank-record.XYZ',
       type: 'bank',
       source: 'yodlee',
-      state: 'ready',
+      state: 'processed',
       received: '2016-06-18T18:57:35.328-08:00',
       data: {
         foo: 'baz'
