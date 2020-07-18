@@ -13,7 +13,7 @@
     type: {
       // The type of shoebox item (bank transaction, uploaded document, email)
       type: 'enum',
-      predefinedValues: [ 'bank', 'document', 'email', 'manual-entry' ],
+      predefinedValues: [ 'bank', 'document', 'email', 'manual-entry', 'payment' ],
       required: true,
       immutable: true
     },

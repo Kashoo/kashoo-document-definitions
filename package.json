@@ -5,8 +5,8 @@
     "synctos": "^2.7.1"
   },
   "devDependencies": {
-    "jshint": "^2.10.2",
-    "mocha": "^7.1.1"
+    "jshint": "^2.11.1",
+    "mocha": "^7.2.0"
   },
   "scripts": {
     "test": "etc/prepare-tests.sh && node_modules/.bin/mocha",
