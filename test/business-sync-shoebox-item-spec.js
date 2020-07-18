@@ -128,7 +128,7 @@ describe('business-sync shoebox item document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry' ]),
+        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry', 'payment' ]),
         errorFormatter.mustNotBeEmptyViolation('source'),
         errorFormatter.typeConstraintViolation('sourceId', 'string'),
         errorFormatter.enumPredefinedValueViolation('state', [ 'ready', 'processed' ]),
@@ -212,7 +212,7 @@ describe('business-sync shoebox item document definition', function() {
       doc,
       expectedDocType,
       [
-        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry' ])
+        errorFormatter.enumPredefinedValueViolation('type', [ 'bank', 'document', 'email', 'manual-entry', 'payment' ])
       ]);
   });
 
