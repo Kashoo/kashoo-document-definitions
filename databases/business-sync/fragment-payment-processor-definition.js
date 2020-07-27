@@ -34,6 +34,12 @@
       required: false,
       minimumValue: 1
     },
+    contactId: {
+      // If set, the contact that payment transactions should be assigned to.
+      type: 'integer',
+      required: false,
+      minimumValue: 1
+    },
     displayName: {
       // A friendly display name for the payment processor
       type: 'string'
