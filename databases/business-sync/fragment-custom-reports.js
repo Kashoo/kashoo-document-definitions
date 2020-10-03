@@ -26,7 +26,7 @@
           },
           type: {
             type: 'enum',
-            predefinedValues: [ 'balance-sheet', 'cash-flow', 'insights', 'profit-and-loss', 'sales-tax' ],
+            predefinedValues: [ 'balance-sheet', 'cash-flow', 'general-ledger', 'insights', 'profit-and-loss', 'sales-tax' ],
             required: true
           },
           config: {
