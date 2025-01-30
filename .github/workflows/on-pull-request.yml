@@ -1,20 +1,15 @@
 name: PR tests
 on: pull_request
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Install SSH key
-        run: |
-          mkdir ~/.ssh
-          echo "${{ secrets.CLOUDCA_DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: 11.9.0
+          node-version: 18
 
       - run: npm install
+
       - run: npm test
